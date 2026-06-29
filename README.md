@@ -211,13 +211,12 @@
   - [비트 연산자](213090305.md)
 
   - [Web](Web_352452663.md)
-    - [JavaScript](JavaScript_282329107.md)
-      - [javascript 추세](390758544.md)
-      - [기본문법](366379068.md)
-
-	- [CSS](CSS_352387114.md)
-
-    - [JSP](JSP_372146177.md)
+		- [JavaScript](JavaScript_282329107.md)
+			- [javascript 추세](390758544.md)
+			- [기본문법](366379068.md)
+		- [CSS](CSS_352387114.md)
+		- [JSP](JSP_372146177.md)
+		- [HTML](html_202606251839.md)
 
 - [Node.js](Node.js_374734849.md)
       - [1. 소개](374734856.md)
