@@ -211,10 +211,6 @@
 
 - [비트 연산자](213090305.md)
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 797f88189d05e16fa8bd986aea91a1209ef97e93
 - [Web](./web/Web_352452663.md)
 	- [JavaScript](./web/JavaScript_282329107.md)
 		- [javascript 추세](./web/390758544.md)
@@ -246,18 +242,6 @@
 	- [6. React CRUD 샘플](./react/404946957.md)
 	- [7. Redux](./react/7.-Redux_404979823.md)
 - [REST](./rest/REST_422412302.md)
-<<<<<<< HEAD
-=======
-=======
-  - [Web](Web_352452663.md)
-		- [JavaScript](JavaScript_282329107.md)
-			- [javascript 추세](390758544.md)
-			- [기본문법](366379068.md)
-		- [CSS](CSS_352387114.md)
-		- [JSP](JSP_372146177.md)
-		- [HTML](html_202606251839.md)
->>>>>>> 6739da16baf92b3c386af7f0567ee01f68edfc80
->>>>>>> 797f88189d05e16fa8bd986aea91a1209ef97e93
 
 - [Python](./python/Python_353730561.md)
     - [개요](./python/367951873.md)
@@ -312,6 +296,7 @@
     - [기초1](383746178.md)
     - [기초2](383713446.md)
     - [기초3](383811783.md)
+    
 - 코딩 사업을 위한 base
 	- [Frontend](Frontend_202606171647.md)
 	- [Backend](Backend_202606171650.md)
