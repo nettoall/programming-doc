@@ -1,31 +1,11 @@
-<div id="page">
-
-<div id="main" class="aui-page-panel">
-
-<div id="main-header">
-
-<div id="breadcrumb-section">
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Spring](Spring_120848385.md)
 4.  [Spring Boot](Spring-Boot_223477765.md)
 
-</div>
+# Programming : Spring Boot Reactive Proframming
 
-# <span id="title-text"> Programming : Spring Boot Reactive Proframming </span>
-
-</div>
-
-<div id="content" class="view">
-
-<div class="page-metadata">
-
-Created by <span class="author"> Dongwook Han</span>, last modified on 3월 30, 2023
-
-</div>
-
-<div id="main-content" class="wiki-content group">
+Created by Dongwook Han, last modified on 3월 30, 2023
 
 # Spring WebFlux 로 Reactive CRUD REST API 개발
 
@@ -133,8 +113,6 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 3월 30, 
 
 # Reactive Stack과 Servlet Stack 의 차이
 
-<div class="table-wrap">
-
 |  |  |
 |----|----|
 | **Servlet Stack** | **Reactive Stack** |
@@ -146,8 +124,6 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 3월 30, 
 | JDBC,JPA, NoSQL과 같은 Spring Data Repository 사용 | Mongo, Redis, Couchbase, R2DBC와 같은 Spring Data Reactive Repositories 사용 |
 | 프로그래밍 모델은 Servlet API 사용 | 프로그래밍 모델은 Reactive Streams 어댑터 사용 |
 | Spring의 Security 모듈은 Spring Security Reactive | Spring의 Security 모듈은 Spring Security |
-
-</div>
 
 # Reactive를 지원하기 위해 최소한의 Software
 
@@ -183,7 +159,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 3월 30, 
 
 - Dependent Starter : Spring Reactive Web, Spring Data Reactive Mongo DB, Lombok, Spring Boot DevTools
 
-- MongoDB 3.6.20 2008R2Plus SSL : mongo db 설치 <a href="https://javatechonline.com/how-to-install-mongo-db-in-your-system/" class="external-link" data-card-appearance="inline" rel="nofollow">https://javatechonline.com/how-to-install-mongo-db-in-your-system/</a> , mongoDB Tutorial <a href="https://javatechonline.com/spring-boot-mongodb-tutorial/" class="external-link" data-card-appearance="inline" rel="nofollow">https://javatechonline.com/spring-boot-mongodb-tutorial/</a>
+- MongoDB 3.6.20 2008R2Plus SSL : mongo db 설치 [https://javatechonline.com/how-to-install-mongo-db-in-your-system/](https://javatechonline.com/how-to-install-mongo-db-in-your-system/) , mongoDB Tutorial [https://javatechonline.com/spring-boot-mongodb-tutorial/](https://javatechonline.com/spring-boot-mongodb-tutorial/)
 
 - JDK8 or later
 
@@ -194,12 +170,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 3월 30, 
 - 개발 툴로 프로젝트 생성
 
 ## 단계2. application.properties 의 database 속성 수정
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```properties
 # application.properties
 ----------------------------------------
 spring.data.mongodb.host=localhost
@@ -207,19 +178,9 @@ spring.data.mongodb.port=27017
 spring.data.mongodb.database=reactivedb
 ```
 
-</div>
-
-</div>
-
-## 단계3. Invoice Entity 생성 과 Repository interface 구현
-
-- Invoice.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+## 단계3. Invoice Entity 생성 과 Repository interface 구현- Invoice.java
+```java
+java
   // Invoice.java
   ----------------------------------------------------------------
   package com.dev.springboot.reactive.model;
@@ -238,23 +199,15 @@ spring.data.mongodb.database=reactivedb
       private String number;
       private Double amount;
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - InvoiceRepository.java
 
 ## 단계4. Service interface 와 implementation class 구현
 
 - InvoiceService.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.springboot.reactive.service;
 
   import com.dev.springboot.reactive.model.Invoice;
@@ -265,26 +218,18 @@ spring.data.mongodb.database=reactivedb
   public interface IInvoiceService {
 
       public Mono<Invoice> saveInvoice(Invoice invoice);
-      
+
       public Flux<Invoice> findAllInvoices();
-      
+
       public Mono<Invoice> getOneInvoice(Integer id);
-      
+
       public Mono<Void> deleteInvoice(Integer id);
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - InvoiceServiceImpl.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.springboot.reactive.service;
 
   import org.springframework.beans.factory.annotation.Autowired;
@@ -301,41 +246,33 @@ spring.data.mongodb.database=reactivedb
 
       @Autowired
       private InvoiceRepository repo;
-      
+
       public Mono<Invoice> saveInvoice(Invoice invoice){
           return repo.save(invoice);
           //for Mono<String> return type
            //return Mono.just("saved successfully");
       }
-      
+
       public Flux<Invoice> findAllInvoices(){
           //return repo.findAll();
           return repo.findAll().switchIfEmpty(Flux.empty());
       }
-      
+
       public Mono<Invoice> getOneInvoice(Integer id){
           return repo.findById(id).switchIfEmpty(Mono.empty());
       }
-      
+
       public Mono<Void> deleteInvoice(Integer id){
           return repo.deleteById(id);
       }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계5. InvoiceController class 구현
 
 - InvoiceController.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.springboot.reactive.controller;
 
   import org.springframework.beans.factory.annotation.Autowired;
@@ -359,7 +296,7 @@ spring.data.mongodb.database=reactivedb
 
       @Autowired
       private IInvoiceService service;
-      
+
       @PostMapping("/save")
       public Mono<Invoice> saveOneInvoice(@RequestBody Invoice invoice){
           return service.saveInvoice(invoice);
@@ -367,29 +304,25 @@ spring.data.mongodb.database=reactivedb
                   // service.saveInvoice(invoice);
                   // return Mono.just("Invoice saved" + invoice.getId());
       }
-      
+
       @GetMapping("/allInvoices")
       public Flux<Invoice> getAllInvoices(){
           return service.findAllInvoices();
       }
-      
+
       @GetMapping("/get/{id}")
       public Mono<Invoice> getOneInvoice(@PathVariable Integer id){
           Mono<Invoice> invoice= service.getOneInvoice(id);
           return invoice;
       }
-      
+
       @DeleteMapping("/delete/{id}")
       public Mono<String> deleteInvoice(@PathVariable Integer id){
           service.deleteInvoice(id);
           return Mono.just("Invoice with id: " +id+ " deleted !");
       }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 # Reactive REST API 테스트
 
@@ -432,12 +365,8 @@ Model class 는 Producer Application과 동일한 모델 사용
 ## 단계4. 각 기능별 Runner class 구현
 
 - GetAllInvoicesRunner.java : 모든 Invoices 검색
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.springboot.reactive.runner;
 
   import org.springframework.boot.CommandLineRunner;
@@ -453,7 +382,7 @@ Model class 는 Producer Application과 동일한 모델 사용
 
       @Override
       public void run(String... args) throws Exception {
-          
+
           WebClient client = WebClient.create("http://localhost:8080");
           Flux<Invoice> flux= client
                   .get()
@@ -464,19 +393,11 @@ Model class 는 Producer Application과 동일한 모델 사용
       }
 
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - GetOneInvoiceRunner.java : 하나의 Invoice 조회
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.springboot.reactive.runner;
 
   import org.springframework.boot.CommandLineRunner;
@@ -492,7 +413,7 @@ Model class 는 Producer Application과 동일한 모델 사용
 
       @Override
       public void run(String... args) throws Exception {
-          
+
           WebClient client = WebClient.create("http://localhost:8080");
           Mono<Invoice> mono= client
                   .get()
@@ -503,19 +424,11 @@ Model class 는 Producer Application과 동일한 모델 사용
       }
 
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - SaveOrUpdateInvoiceRunner.java : invoice 저장하거나 수정
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.springboot.reactive.runner;
 
   import org.springframework.boot.CommandLineRunner;
@@ -531,7 +444,7 @@ Model class 는 Producer Application과 동일한 모델 사용
 
       @Override
       public void run(String... args) throws Exception {
-          
+
           WebClient client = WebClient.create("http://localhost:8080");
           Mono<Invoice> mono= client
                   .post()
@@ -542,19 +455,11 @@ Model class 는 Producer Application과 동일한 모델 사용
       }
 
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - DeleteInvocieRunner.java : Invoice 삭제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.springboot.reactive.runner;
 
   import org.springframework.boot.CommandLineRunner;
@@ -568,7 +473,7 @@ Model class 는 Producer Application과 동일한 모델 사용
 
       @Override
       public void run(String... args) throws Exception {
-          
+
           WebClient client = WebClient.create("http://localhost:8080");
           Mono<Void> mono= client
                   .delete()
@@ -580,11 +485,7 @@ Model class 는 Producer Application과 동일한 모델 사용
       }
 
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 # WebClient 심화
 
@@ -631,40 +532,18 @@ Model class 는 Producer Application과 동일한 모델 사용
 - WebClient를 생성하는데는 세가지 방법이 있음
 
   1.  기본 설정과 함께 WebClient 생성
-
-      <div class="code panel pdl" style="border-width: 1px;">
-
-      <div class="codeContent panelContent pdl">
-
-      ``` syntaxhighlighter-pre
+```java
+java
       WebClient webClient = WebClient.create();
-      ```
-
-      </div>
-
-      </div>
-
-  2.  base URI와 함께 생성
-
-      <div class="code panel pdl" style="border-width: 1px;">
-
-      <div class="codeContent panelContent pdl">
-
-      ``` syntaxhighlighter-pre
+```
+2.  base URI와 함께 생성
+```java
+java
       WebClient webClient = WebClient.create("http://localhost:8080")
-      ```
-
-      </div>
-
-      </div>
-
-  3.  DefaultWebClientBuilder 클래스를 사용하여 생성
-
-      <div class="code panel pdl" style="border-width: 1px;">
-
-      <div class="codeContent panelContent pdl">
-
-      ``` syntaxhighlighter-pre
+```
+3.  DefaultWebClientBuilder 클래스를 사용하여 생성
+```java
+java
       WebClient webClient = WebClient
                  .builder()
                  .baseUrl("http://localhost:8080")
@@ -672,11 +551,7 @@ Model class 는 Producer Application과 동일한 모델 사용
                  .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                  .defaultUriVariables(Collections.singletonMap("url", "http://localhost:8080"))
                  .build();
-      ```
-
-      </div>
-
-      </div>
+```
 
 - 마지막 옵션은 가장 고급 옵션이며 요구 사항에 따라 클라이언트 동작을 완전히 사용자 지정할 수 있음
 
@@ -697,23 +572,15 @@ Model class 는 Producer Application과 동일한 모델 사용
 ## WebClient를 사용하여 request를 보내기
 
 - WebClient를 사용하여 요청을 보내는 데 가장 일반적으로 사용되는 기본 프로그래밍 구조를 이해해 보자
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   WebClient webClient = WebClient.create();
   WebClient.ResponseSpec responseSpec = webClient.get()
             .uri("//javatechonline.com")
             .retrieve();
-  ```
+```
 
-  </div>
-
-  </div>
-
-  - WebClient의 create() 메소드를 호출하여 인스턴스 생성
+- WebClient의 create() 메소드를 호출하여 인스턴스 생성
 
   - WebClient 인스터스를 사용하여 http GET 요청 메소드와 URI를 설정하고 호출함
 
@@ -724,26 +591,18 @@ Model class 는 Producer Application과 동일한 모델 사용
 - 요청 자체를 차단하거나 기다리지 않은 비동기 작업
 
 - 다음 예는 요청이 여전히 보류중이므로 아직 response의 세부 정보를 억세스 할 수 없음
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   String responseBody = responseSpec.bodyToMono(String.class).block();
-  ```
+```
 
-  </div>
+- Response body를 읽으려면 응답 내용에 대한 Mono/Flux를 가져와야 합니다.
 
-  </div>
+- Response Body Content를 사용할 수 있으면 어떻게든 풀어야 합니다.
 
-- <u>Response body를 읽으려면 응답 내용에 대한 Mono/Flux를 가져와야 합니다.</u>
+- 응답을 풀기 위해 응답의 원시 본문을 포함하는 문자열을 제공하는 가장 간단한 형식을 사용
 
-- <u>Response Body Content를 사용할 수 있으면 어떻게든 풀어야 합니다.</u>
-
-- <u>응답을 풀기 위해 응답의 원시 본문을 포함하는 문자열을 제공하는 가장 간단한 형식을 사용</u>
-
-- <u>그러나 여기에 다른 클래스를 전달하여 이 문서의 뒷부분에서 사용할 적절한 형식으로 콘텐츠를 자동으로 구문분석할 수 있음</u>
+- 그러나 여기에 다른 클래스를 전달하여 이 문서의 뒷부분에서 사용할 적절한 형식으로 콘텐츠를 자동으로 구문분석할 수 있음
 
 - 정확히 어떤 의미인지 헤갈림
 
@@ -770,12 +629,8 @@ Model class 는 Producer Application과 동일한 모델 사용
 ### 단계1. end points 에 대한 모든 상수를 가지고 있는 클래스 생성
 
 - InvoiceConstants.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   public class InvoiceConstants {
 
       public static final String ADD_INVOICE= "/invoice";
@@ -787,21 +642,13 @@ Model class 는 Producer Application과 동일한 모델 사용
       public static final String GET_INVOICE_BY_NAME = "/invoiceName";
 
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ### 단계2. 각 endpoint에 대한 모든 메소드를 가지고 있는 클래스 생성
 
 - InvoiceRestClient.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   import java.util.List;
 
   import org.springframework.web.reactive.function.client.WebClient;
@@ -876,12 +723,12 @@ Model class 는 Producer Application과 동일한 모델 사용
                      .queryParam("invoice_name", invoiceName)
                      .build().toUriString();
 
-        try { 
+        try {
             return webClient.get()
                     .uri(uri)
                     .retrieve()
                     .bodyToFlux(Invoice.class)
-                    .collectList() 
+                    .collectList()
                     .block();
         } catch (WebClientResponseException wcre) {
             log.error("Error Response Code is {} and Response Body is {}"
@@ -896,12 +743,12 @@ Model class 는 Producer Application과 동일한 모델 사용
 
      public Invoice addInvoice(Invoice invoice) {
 
-        try { 
+        try {
             return webClient
                    .post()                    // adding Invoice is a post() request
                    .uri(ADD_INVOICE)
                    .bodyValue(invoice)
-                   .retrieve() 
+                   .retrieve()
                    .bodyToMono(Invoice.class)
                    .block();
         } catch (WebClientResponseException wcre) {
@@ -917,7 +764,7 @@ Model class 는 Producer Application과 동일한 모델 사용
 
      public Invoice updateInvoice(Invoice invoice, Integer id) {
 
-        try { 
+        try {
             return webClient
                     .put()
                     .uri(GET_INVOICE_BY_ID, id)
@@ -933,14 +780,14 @@ Model class 는 Producer Application과 동일한 모델 사용
         } catch (Exception ex) {
             log.error("Exception in method updateInvoice()",ex);
             throw ex;
-        } 
+        }
      }
 
      public String deleteInvoiceById(Integer id) {
 
-        try { 
+        try {
             return webClient
-                    .delete() 
+                    .delete()
                     .uri(GET_INVOICE_BY_ID, id)
                     .retrieve()
                     .bodyToMono(String.class)
@@ -953,26 +800,18 @@ Model class 는 Producer Application과 동일한 모델 사용
         } catch (Exception ex) {
             log.error("Exception in method deleteInvoiceById()",ex);
             throw ex;
-        } 
+        }
      }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 여기서는 WebClient 인스턴스가 동기식 클라이언트처럼 동작해야 한다고 가정하여 각 메소드에 block() 사용
 
 ## WebClient를 이용한 복잡한 POST 요청 예
 
 - 복잡한 POST 요청을 보낼 때가 있는데 아래 코드가 그런 예제임
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   import java.net.URI;
   import java.net.URISyntaxException;
   import org.springframework.http.MediaType;
@@ -998,11 +837,7 @@ Model class 는 Producer Application과 동일한 모델 사용
                        .block();
      return response;
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - WebClient가 헤더와 복잡한 본문 부분을 구성하는 방법을 봄
 
@@ -1021,35 +856,8 @@ Model class 는 Producer Application과 동일한 모델 사용
 - 이 제한을 초과하면 DataBufferLimitException 발생
 
 - 메노리 제한을 재조정하기 위해 application.properties에 속성을 구성
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```properties
+properties
   spring.codec.max-in-memory-size=10MB
-  ```
-
-  </div>
-
-  </div>
-
-</div>
-
-</div>
-
-</div>
-
-<div id="footer" role="contentinfo">
-
-<div class="section footer-body">
-
+```
 Document generated by Confluence on 4월 05, 2026 17:57
-
-
-
-</div>
-
-</div>
-
-</div>

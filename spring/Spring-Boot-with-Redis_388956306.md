@@ -1,34 +1,14 @@
-<div id="page">
-
-<div id="main" class="aui-page-panel">
-
-<div id="main-header">
-
-<div id="breadcrumb-section">
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Spring](Spring_120848385.md)
 4.  [Spring Boot](Spring-Boot_223477765.md)
 5.  [Spring Boot Caching](Spring-Boot-Caching_393740291.md)
 
-</div>
+# Programming : Spring Boot with Redis
 
-# <span id="title-text"> Programming : Spring Boot with Redis </span>
+Created by Dongwook Han, last modified on 4월 28, 2023
 
-</div>
-
-<div id="content" class="view">
-
-<div class="page-metadata">
-
-Created by <span class="author"> Dongwook Han</span>, last modified on 4월 28, 2023
-
-</div>
-
-<div id="main-content" class="wiki-content group">
-
-<style>[data-colorid=ni8qmcq1vj]{color:#bf2600} html[data-color-mode=dark] [data-colorid=ni8qmcq1vj]{color:#ff6640}[data-colorid=upw5h6t031]{color:#bf2600} html[data-color-mode=dark] [data-colorid=upw5h6t031]{color:#ff6640}</style>자주, 애플리케이션이 예상했던 만큼 제대로 작동하지 않는 단계에 도달합니다. 다른 여러 솔루션 외에도 DB 호출을 더 빠르게 만드는 캐싱 기술도 찾는다. 이를 가능하게 하기 위해 Redis Cache 기술을 도입했습니다. Redis 캐시는 DB에서 데이터에 액세스하는 동안 네트워크 호출 수를 최소화하여 도움을 줍니다. 말할 필요도 없이 이 기사의 주제는 '스프링 부트 애플리케이션에서 Redis Cache를 구현하는 방법'입니다.
+자주, 애플리케이션이 예상했던 만큼 제대로 작동하지 않는 단계에 도달합니다. 다른 여러 솔루션 외에도 DB 호출을 더 빠르게 만드는 캐싱 기술도 찾는다. 이를 가능하게 하기 위해 Redis Cache 기술을 도입했습니다. Redis 캐시는 DB에서 데이터에 액세스하는 동안 네트워크 호출 수를 최소화하여 도움을 줍니다. 말할 필요도 없이 이 기사의 주제는 '스프링 부트 애플리케이션에서 Redis Cache를 구현하는 방법'입니다.
 
 Spring Boot는 'Spring Data Redis' dependency를 통해 이 기능을 지원합니다. 또한 Spring Boot 애플리케이션에서 Redis Cache가 작동하도록 하려면 Redis 서버를 다운로드해야 합니다. 또한 Cache 외에도 Redis는 데이터베이스 및 Message Broker로도 사용할 수 있습니다. 그러나 실시간 애플리케이션에서 Redis는 데이터베이스 및 메시지 브로커에 비해 캐시 관리자로 널리 사용됩니다. '스프링 부트 애플리케이션에서 Redis 캐시를 구현하는 방법' 기사와 관련 개념에 대해 논의를 시작하겠습니다
 
@@ -122,9 +102,9 @@ Redis의 완전한 형태는 **RE**mote **DI**ctionary **S**erver입니다. 데�
 
 1.  Redis를 Windows에 다운로드하려면 아래 링크 중 하나를 방문
 
-    - <a href="https://github.com/microsoftarchive/redis/releases/tag/win-3.2.100" class="external-link" rel="nofollow">Download Redis Server</a>  :  version 3.2.100
+    - [Download Redis Server](https://github.com/microsoftarchive/redis/releases/tag/win-3.2.100)  :  version 3.2.100
 
-    - <a href="https://github.com/tporadowski/redis/releases" class="external-link" rel="nofollow">Download Redis Server</a>  :  version 5.0.10
+    - [Download Redis Server](https://github.com/tporadowski/redis/releases)  :  version 5.0.10
 
 2.  Redis-x64-5.0.10.zip을 클릭하고 폴더에 압축을 풉니다
 
@@ -179,12 +159,7 @@ REST를 사용하여 CRUD 애플리케이션을 생성합니다. 여기에서 �
 ## 단계2. application.properties 수정
 
 - 다음과 같이 application.properties 수정
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```properties
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.datasource.url=jdbc:mysql://localhost:3306/testdb
 spring.datasource.username=admin
@@ -199,18 +174,9 @@ spring.cache.redis.cache-null-values=true
 #spring.cache.redis.time-to-live=40000
 ```
 
-</div>
-
-</div>
-
 - application.yml
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
-  spring:
+```yaml
+spring:
     datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/testdb
@@ -228,21 +194,12 @@ spring.cache.redis.cache-null-values=true
     mvc:
       pathmatch:
         matching-strategy: ant_path_matcher
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계3. Starter 클래스에 @EnableCaching annotation 추가
 
 - @EnableCaching 은 Caching 기능의 이점을 얻기 위해 필요
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```java
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -257,19 +214,8 @@ public class RedisAsaCacheWithSpringBootApplication {
 }
 ```
 
-</div>
-
-</div>
-
-## 단계4. Invoice.java Entity 클래스 생성
-
-- Lombok annotation을 가진 entity 클래스를 생성. 추가적으로 하나의 SerialVersionUID를 생성한다.
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+## 단계4. Invoice.java Entity 클래스 생성- Lombok annotation을 가진 entity 클래스를 생성. 추가적으로 하나의 SerialVersionUID를 생성한다.
+```java
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -286,19 +232,8 @@ public class Invoice implements Serializable{
 }
 ```
 
-</div>
-
-</div>
-
-## 단계5. InvoiceRepository.java Repository interface 생성
-
-- JpaRepository\<Invoice, Interger\>를 상속받아 구현한 InvoiceRepository.java interface 구현
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+## 단계5. InvoiceRepository.java Repository interface 생성- JpaRepository\<Invoice, Interger\>를 상속받아 구현한 InvoiceRepository.java interface 구현
+```java
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import com.dev.springboot.redis.model.Invoice;
@@ -309,19 +244,8 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
 }
 ```
 
-</div>
-
-</div>
-
-## 단계6. 사용자 정의 예외처리 InvoiceNotFoundException.java 구현
-
-- Exception을 처리하는 클래스 구현
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+## 단계6. 사용자 정의 예외처리 InvoiceNotFoundException.java 구현- Exception을 처리하는 클래스 구현
+```java
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -336,21 +260,10 @@ public class InvoiceNotFoundException extends RuntimeException {
 }
 ```
 
-</div>
-
-</div>
-
-## 단계7&8. InvoiceService, InvoiceServiceImpl.java 구현
-
-- service 계층을 구현하기 위해 service interface와 구현 클래스를 구현.
+## 단계7&8. InvoiceService, InvoiceServiceImpl.java 구현- service 계층을 구현하기 위해 service interface와 구현 클래스를 구현.
 
 **Service Interface:**
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```java
 import com.dev.springboot.redis.model.Invoice;
 import java.util.List;
 
@@ -363,18 +276,8 @@ public interface InvoiceService {
     public List<Invoice> getAllInvoices();
 }
 ```
-
-</div>
-
-</div>
-
 **Service Implementation Class:**
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```java
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -432,19 +335,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 }
 ```
 
-</div>
-
-</div>
-
-## 단계9. RestController 클래스 구현
-
-- REST 호출과 결과를 가져오는 RestController 구현
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+## 단계9. RestController 클래스 구현- REST 호출과 결과를 가져오는 RestController 구현
+```java
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -471,7 +363,7 @@ public class InvoiceController {
        return invoiceService.saveInvoice(inv);
     }
 
-    @GetMapping("/allInv") 
+    @GetMapping("/allInv")
     public ResponseEntity<List<Invoice>> getAllInvoices(){
        return ResponseEntity.ok(invoiceService.getAllInvoices());
     }
@@ -494,68 +386,37 @@ public class InvoiceController {
 }
 ```
 
-</div>
-
-</div>
-
-## RedisCache 테스트하기
-
-1.  Redis Server 시작
+## RedisCache 테스트하기1.  Redis Server 시작
 
 2.  Spring Boot 애플리케이션 시작
 
 3.  REST Client를 사용하여 Rest Call 호출. RestTemplate 나 Postman 을 사용하여 테스트
 
-4.  swagger-ui 를 테스트 중 . **<span colorid="ni8qmcq1vj">allInv 에서 모두 데이터를 가져오지 못하고 있음 </span>**
+4.  swagger-ui 를 테스트 중 . **allInv 에서 모두 데이터를 가져오지 못하고 있음 **
 
 # Caching annotation을 언제 사용하는지
 
 - 특정 메서드에 여러 caching annotation을 적용하고 싶다고 가정.
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
-@CacheEvict("Invoice") 
+```java
+@CacheEvict("Invoice")
 @CacheEvict(value="Invoice", key="#invId")
 public void deleteInvoice(Integer invId) {
     ....
 }
 ```
 
-</div>
-
-</div>
-
-- Java는 주어진 메서드에 대해 동일한 유형의 여러 annotation을 정의하는 것을 허용하지 않기 때문에 **<span colorid="upw5h6t031">컴파일 오류 발생</span>** (@CacheEvict("Invoice") , @CacheEvict(value="Invoice, key=”#invld”) )
-
-- 이 경우에는 @Caching annotation을 사용해야 함
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+- Java는 주어진 메서드에 대해 동일한 유형의 여러 annotation을 정의하는 것을 허용하지 않기 때문에 **컴파일 오류 발생** (@CacheEvict("Invoice") , @CacheEvict(value="Invoice, key=”#invld”) )- 이 경우에는 @Caching annotation을 사용해야 함
+```java
 @Caching(
   evict = {@CacheEvict("Invoice"), @CacheEvict(value="Invoice", key="#invId")
-}) 
+})
 public void deleteInvoice(Integer invId) {
      ....
 }
 ```
 
-</div>
-
-</div>
-
 - 마찬가지로 다른 유형의 annotation이 있는 경우, 가독성을 높이기 위해 @Caching annotation을 사용하여 그룹화 할 수 있음(@CacheEvict(…), @CachePut(value=...))
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```java
 @CacheEvict(value = "usersList", allEntries = true)
 @CachePut(value = "user", key = "#user.getUserId()")
 public User updateUser(User user) {
@@ -563,71 +424,35 @@ public User updateUser(User user) {
 }
 ```
 
-</div>
-
-</div>
-
 - 다른 유형의 여러 Caching annotation을 다음과 같이 그룹화
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```java
 @Caching(
    evict = {@CacheEvict(value = "usersList", allEntries = true)},
    put   = {@CachePut(value = "user", key = "#user.getUserId()")}
-) 
+)
 public User updateUser(User user) {
    ....
 }
 ```
 
-</div>
-
-</div>
-
-## How to Implement Conditional **Caching using Annotations?**
-
-If we have some requirement when we need to cache data only on a particular condition, we can parameterize our annotation with two parameters: ‘condition’ and ‘unless’. They accept a <a href="https://docs.spring.io/spring-framework/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.md" class="external-link" rel="nofollow">SpEL expression</a> and ensures that the results are cached based on evaluating that expression. This kind of conditional caching can be useful for managing large amount of results. For example, let’s observe one example from each parameter.
+## How to Implement Conditional **Caching using Annotations?**If we have some requirement when we need to cache data only on a particular condition, we can parameterize our annotation with two parameters: ‘condition’ and ‘unless’. They accept a [SpEL expression](https://docs.spring.io/spring-framework/docs/4.3.10.RELEASE/spring-framework-reference/html/expressions.md) and ensures that the results are cached based on evaluating that expression. This kind of conditional caching can be useful for managing large amount of results. For example, let’s observe one example from each parameter.
 
 Below Example demonstrates the concept of ‘condition’ parameter.
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
-@CachePut(value="invoices", condition="#invoice.amount>=2496") 
+```java
+@CachePut(value="invoices", condition="#invoice.amount>=2496")
 public String getInvoice(Invoice invoice) {
     ...
 }
 ```
-
-</div>
-
-</div>
-
 Now, let’s see the concept of ‘unless’ parameter from the example below:
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
-@CachePut(value="invoices", unless="#result.length()<24") 
+```java
+@CachePut(value="invoices", unless="#result.length()<24")
 public String getInvoice(Invoice invoice) {
     ...
 }
 ```
 
-</div>
-
-</div>
-
-- ‘condition' 과 ‘unless’ 매배견수는 모든 caching annotaton과 사용할 수 있음
-
-# Redis CLI 사용하는 법
+- ‘condition' 과 ‘unless’ 매배견수는 모든 caching annotaton과 사용할 수 있음# Redis CLI 사용하는 법
 
 - Redis CLI를 사용하는 법
 
@@ -653,24 +478,6 @@ public String getInvoice(Invoice invoice) {
 
 5.  DB \# 4의 모든 key 제거 : **-n 4 FLUSHDB**
 
-Redis CLI 명령어 참고 : <a href="https://redis.io/docs/manual/cli/" class="external-link" rel="nofollow">Redis CLI manual</a>.
-
-</div>
-
-</div>
-
-</div>
-
-<div id="footer" role="contentinfo">
-
-<div class="section footer-body">
+Redis CLI 명령어 참고 : [Redis CLI manual](https://redis.io/docs/manual/cli/).
 
 Document generated by Confluence on 4월 05, 2026 17:57
-
-
-
-</div>
-
-</div>
-
-</div>

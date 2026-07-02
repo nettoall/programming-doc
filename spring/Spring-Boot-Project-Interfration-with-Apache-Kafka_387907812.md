@@ -1,31 +1,11 @@
-<div id="page">
-
-<div id="main" class="aui-page-panel">
-
-<div id="main-header">
-
-<div id="breadcrumb-section">
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Spring](Spring_120848385.md)
 4.  [Spring Boot](Spring-Boot_223477765.md)
 
-</div>
+# Programming : Spring Boot Project Interfration with Apache Kafka
 
-# <span id="title-text"> Programming : Spring Boot Project Interfration with Apache Kafka </span>
-
-</div>
-
-<div id="content" class="view">
-
-<div class="page-metadata">
-
-Created by <span class="author"> Dongwook Han</span>, last modified on 4월 02, 2023
-
-</div>
-
-<div id="main-content" class="wiki-content group">
+Created by Dongwook Han, last modified on 4월 02, 2023
 
 - 많은 최신 시스템에서는 데이터가 사용 가능한 즉시 대상 목적(targeted purpose)을 위해 데이터가 처리되어야 함
 
@@ -177,7 +157,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 4월 02, 
 
 ## Kafka 다운로드
 
-- Kafka 2.6.0 설치(<a href="https://kafka.apache.org/" class="external-link" data-card-appearance="inline" rel="nofollow">https://kafka.apache.org/</a> ), 2023.04 현재 3.4.0 이 최신
+- Kafka 2.6.0 설치([https://kafka.apache.org/](https://kafka.apache.org/) ), 2023.04 현재 3.4.0 이 최신
 
 - Kafka 3.1.0 부터 Java 17 지원
 
@@ -194,12 +174,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 4월 02, 
 - dependency : Spring Web, Spring For Apache Kafka, Spring Boot DevTools.
 
 ## 단계2. SpringBootApplication에 @EnableKafka 어노테이션 추가
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```java
 package com.dev.spring.kafka;
 
 import org.springframework.boot.SpringApplication;
@@ -216,21 +191,9 @@ public class SpringBoot2ApacheKafkaTestApplication {
 }
 ```
 
-</div>
-
-</div>
-
-## 단계3. MessageRepository 클래스 구현
-
-- MessageRepository 클래스 구현
-
-- 추후 목록과 메시지에 대해 정의할 예정
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+## 단계3. MessageRepository 클래스 구현- MessageRepository 클래스 구현- 추후 목록과 메시지에 대해 정의할 예정
+```java
+java
   package com.dev.spring.kafka.message.repository;
 
   import java.util.ArrayList;
@@ -250,21 +213,13 @@ public class SpringBoot2ApacheKafkaTestApplication {
             return list.toString();
          }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계4. MessageProducer 클래스 구현
 
 - 메시지를 생산하고 Topic에 전송하는 MessageProducer 클래스 구현
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.spring.kafka.sender;
 
   import org.slf4j.Logger;
@@ -279,7 +234,7 @@ public class SpringBoot2ApacheKafkaTestApplication {
 
   private Logger log =LoggerFactory.getLogger(MessageProducer.class);
 
-        @Autowired 
+        @Autowired
         private KafkaTemplate<String, String> kafkaTemplate;
 
         @Value("${myapp.kafka.topic}")
@@ -290,21 +245,13 @@ public class SpringBoot2ApacheKafkaTestApplication {
            kafkaTemplate.send(topic, message);
         }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계5. MessageConsumer 클래스 구현
 
 - Topic으로부터 Message를 Consume 하는 MessageConsumer 구현
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.spring.kafka.consumer;
 
   import org.slf4j.Logger;
@@ -328,23 +275,15 @@ public class SpringBoot2ApacheKafkaTestApplication {
            messageRepo.addMessage(message);
         }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계6. KafkaRestController를 @RestController로 선언
 
 - 웹 브라우저의 메시지를 Producer에 대한 입력으로 사용할 RestController 선언
 
 - Kafka에 메시지를 보내 Rest 호출을 통해 처리
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.spring.kafka.controller;
 
   import org.springframework.beans.factory.annotation.Autowired;
@@ -377,21 +316,13 @@ public class SpringBoot2ApacheKafkaTestApplication {
            return messageRepo.getAllMessages() ;
         }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계7. application.yml 파일 생성
 
 - src/main/resources 에 application.properties 제거하고 application.yml 생성
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```yaml
+yaml
   server:
     port: 9090
 
@@ -401,99 +332,50 @@ public class SpringBoot2ApacheKafkaTestApplication {
         bootstrap-servers: localhost:9092
         key-serializer: org.apache.kafka.common.serialization.StringSerializer
         value-serializer: org.apache.kafka.common.serialization.StringSerializer
-                    
+
       consumer:
         bootstrap-servers: localhost:9092
         key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
         value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-          
+
   myapp:
       kafka:
         topic: myKafkaTest
-  ```
-
-  </div>
-
-  </div>
+```
 
 # 테스트
 
 1.  Start Zookeeper
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+```text
+text
     cmd> cd F:\dev_tool\kafka\kafka_2.13-2.6.0
     cmd> .\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
-    ```
-
-    </div>
-
-    </div>
-
+```
 2.  Start Kafka setup
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+```text
+text
     cmd> cd F:\dev_tool\kafka\kafka_2.13-2.6.0Create a Topic
     cmd> .\bin\windows\kafka-server-start.bat .\config\server.properties
-    ```
-
-    </div>
-
-    </div>
-
+```
 3.  Topic 생성
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+```text
+text
     cmd> .\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic myKafkaTest
-    ```
-
-    </div>
-
-    </div>
-
+```
 4.  Run Spring Boot Application
 
 5.  애플리케이션 시작 후, Browser에 다음 URL 입력하여 테스트
 
-    - <a href="http://localhost:9090/send?msg=I" class="external-link" rel="nofollow">http://localhost:9090/send?msg=I</a> like
+    - [http://localhost:9090/send?msg=I](http://localhost:9090/send?msg=I) like
 
-    - <a href="http://localhost:9090/send?msg=I" class="external-link" rel="nofollow">http://localhost:9090/send?msg=to work on</a>
+    - [http://localhost:9090/send?msg=to work on](http://localhost:9090/send?msg=I)
 
-    - <a href="http://localhost:9090/send?msg=I" class="external-link" rel="nofollow">http://localhost:9090/send?msg=Kafka</a>
+    - [http://localhost:9090/send?msg=Kafka](http://localhost:9090/send?msg=I)
 
-    - <a href="http://localhost:9090/send?msg=I" class="external-link" rel="nofollow">http://localhost:9090/send?msg=</a>with Spring Boot
+    - [http://localhost:9090/send?msg=](http://localhost:9090/send?msg=I)with Spring Boot
 
     - http://localhost:9090/getAll
 
 6.  console에 입력한 메시지가 있는지 확인
 
-</div>
-
-</div>
-
-</div>
-
-<div id="footer" role="contentinfo">
-
-<div class="section footer-body">
-
 Document generated by Confluence on 4월 05, 2026 17:57
-
-
-
-</div>
-
-</div>
-
-</div>

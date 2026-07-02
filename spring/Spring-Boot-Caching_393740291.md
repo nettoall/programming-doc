@@ -1,31 +1,11 @@
-<div id="page">
-
-<div id="main" class="aui-page-panel">
-
-<div id="main-header">
-
-<div id="breadcrumb-section">
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Spring](Spring_120848385.md)
 4.  [Spring Boot](Spring-Boot_223477765.md)
 
-</div>
+# Programming : Spring Boot Caching
 
-# <span id="title-text"> Programming : Spring Boot Caching </span>
-
-</div>
-
-<div id="content" class="view">
-
-<div class="page-metadata">
-
-Created by <span class="author"> Dongwook Han</span>, last modified on 5월 01, 2023
-
-</div>
-
-<div id="main-content" class="wiki-content group">
+Created by Dongwook Han, last modified on 5월 01, 2023
 
 # 정의
 
@@ -39,8 +19,6 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 5월 01, 
 
 ## 캐쉬와 버퍼의 차이점
 
-<div class="table-wrap">
-
 |  |  |
 |----|----|
 | **Cache** | **Buffer** |
@@ -49,8 +27,6 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 5월 01, 
 | `페이지 캐시의 크기를 나타냅니다.` | `메모리 내 원시 블록 I/O 버퍼를 참조합니다.` |
 | `캐시에서 읽습니다.` | `버퍼에 씁니다.` |
 | `읽기 성능을 향상시킵니다.` | `쓰기 성능을 향상시킵니다.` |
-
-</div>
 
 ## Spring Boot 사용 가능한 캐쉬
 
@@ -105,12 +81,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 5월 01, 
 # 예제
 
 ## gradle 정의
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```css
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -120,19 +91,9 @@ dependencies {
 }
 ```
 
-</div>
-
-</div>
-
-## 샘플 코드
-
-- @EnableCaching : Spring Boot Application 에 정의
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+## 샘플 코드- @EnableCaching : Spring Boot Application 에 정의
+```java
+java
   @SpringBootApplication
   @EnableCaching
   public class CacheApplication {
@@ -142,24 +103,16 @@ dependencies {
       }
 
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - @Cacheable
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @Component
   public class EmployeeServiceImpl implements EmployeeService{
       private static final Logger LOGGER = LoggerFactory.getLogger(EmployeeServiceImpl.class);
       private List<Employee> employees = new ArrayList<>();
-      
+
       @Override
       public List<Employee> getEmployees() {
           retrieveDataFromDatabase();
@@ -191,151 +144,81 @@ dependencies {
           }
       }
   }
-  ```
+```
 
-  </div>
-
-  </div>
-
-  - `이 예에서 우리의 주요 목표는 실제 백엔드 서비스 호출을 복제하기 위해 응답을 의도적으로 지연시키는 서비스 계층의 데이터를 캐시하는 것입니다. 프로그램에서 시뮬레이션된 대기로 인해 첫 번째 히트에서 응답이 지연되지만 후속 호출은 훨씬 더 빠른 응답을 받습니다.`
+- `이 예에서 우리의 주요 목표는 실제 백엔드 서비스 호출을 복제하기 위해 응답을 의도적으로 지연시키는 서비스 계층의 데이터를 캐시하는 것입니다. 프로그램에서 시뮬레이션된 대기로 인해 첫 번째 히트에서 응답이 지연되지만 후속 호출은 훨씬 더 빠른 응답을 받습니다.`
 
   - `첫 번째 호출에서 Employee 값은 데이터베이스에서 검색되고 반환된 값은 캐시에 저장됩니다.`
 
 - CustomConfig
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @Retention(RetentionPolicy.RUNTIME)
   @Target(ElementType.METHOD)
   @Cacheable(cacheNames = "employee")
   public @interface CustomEmployeeCachingAnnotation {
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - @CachePut
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
-  @CachePut(cacheNames="employee", key="#id") //updating cache  
+```java
+java
+  @CachePut(cacheNames="employee", key="#id") //updating cache
   public Employee updateEmployee(int id, Employee employeeData)
   {
-  //some code  
-  }  
-  ```
-
-  </div>
-
-  </div>
+  //some code
+  }
+```
 
 - @CacheEvict
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
-  //removing all entries of employee from the cache  
+```java
+java
+  //removing all entries of employee from the cache
   @CacheEvict(value="employee", allEntries=true)
   public String getEmployee(int id)
   {
-  //some code  
-  } 
+  //some code
+  }
 
-  @CacheEvict(key="#employee.name") 
-  ```
-
-  </div>
-
-  </div>
+  @CacheEvict(key="#employee.name")
+```
 
 - @Caching
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @CacheEvict("employees")
   @CacheEvict(value="item", key="#key")
   public List<Employee> getEmployees()() {...}
-  ```
+```
 
-  </div>
-
-  </div>
-
-  - `메서드 수준 주석이며 여러 캐시 작업을 다시 그룹화해야 할 때 사용됩니다.`
+- `메서드 수준 주석이며 여러 캐시 작업을 다시 그룹화해야 할 때 사용됩니다.`
 
   - `위 작업은 @Caching 주석을 사용하여 함께 넣을 수 있습니다. @Caching 주석은 여러 사용 사례를 함께 처리하는 솔루션을 제공합니다.`
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+```java
+java
     @Caching(evict = { @CacheEvict("employees"),
     @CacheEvict(cacheNames="item", key="#key") })
     public List<Employee> getEmployees()() {...}
-    ```
-
-    </div>
-
-    </div>
+```
 
 - @CacheConfig
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @CacheConfig(cacheNames={"employee"})
   public class EmployeeService
   {
-  //some code  
-  }  
-  ```
+  //some code
+  }
+```
 
-  </div>
-
-  </div>
-
-  - `클래스 수준 주석입니다. 전체 클래스에 대한 캐시를 저장하도록 Spring을 지정합니다.`
+- `클래스 수준 주석입니다. 전체 클래스에 대한 캐시를 저장하도록 Spring을 지정합니다.`
 
 # 테스트
 
-- <a href="http://localhost:8080/get/employees" class="external-link" rel="nofollow">http://localhost:8080/get/employees</a> 로 테스트
+- [http://localhost:8080/get/employees](http://localhost:8080/get/employees) 로 테스트
 
 - 일부러 createdata 로직에 4초간 sleep 하도록 하였는데, 두번째부터는 데이터가 아닌 cache에서 가져오게 되므로 지연 현상이 없음
 
 - ServiceImpl의 List\<Employee\> getEmployees() 에 @Cacheable 어노테이션을 정의 안 하니 게속 데이터를 가져오면서 4초간 sleep 함 → @Cacheable 추가 후 테스트 처음 호출때 말고는 캐시에서 가져옴
 
-</div>
-
-</div>
-
-</div>
-
-<div id="footer" role="contentinfo">
-
-<div class="section footer-body">
-
 Document generated by Confluence on 4월 05, 2026 17:57
-
-
-
-</div>
-
-</div>
-
-</div>

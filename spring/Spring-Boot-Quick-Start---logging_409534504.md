@@ -1,4 +1,3 @@
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Spring](Spring_120848385.md)
@@ -20,7 +19,8 @@ Created by Dongwook Han, last modified on 3월 14, 2024
 
 - 기본 로그 레벨 INFO
 - 로깅 직접 관리시 logback.xml 추가하여 설정
-  ``` xml
+```xml
+xml
   <?xml version="1.0" encoding="UTF-8"?>
 
   <configuration>
@@ -53,13 +53,13 @@ Created by Dongwook Han, last modified on 3월 14, 2024
   <root level="error">
     <appender-ref ref="consoleAppender" />
   </root>
-      
-  </configuration>
-  ```
 
-  - src/main/resources/ 에 추가
+  </configuration>
+```
+
+- src/main/resources/ 에 추가
     - spring와 일반 자바 프로그램일 경우 logback.xml 추가
-    - Spring Boot 인 경우 **<u>logback-spring.xml</u>** 을 추가
+    - Spring Boot 인 경우 **logback-spring.xml** 을 추가
 
   - spring이 기본으로 제공하는 설정 파일 사용시 include base.xml 설정, 사용하지 않을시 제외한 후 appendder와 loggder 추가
   - appender 와 logger 설정으로 구성됨
@@ -73,10 +73,11 @@ Created by Dongwook Han, last modified on 3월 14, 2024
     - %n : 개행 처리
 
 - default logback 사용시 application.properties에 로그 설정 추가
-  ``` properties
+```properties
+properties
   #Logging Setting
   logging.level.com.nettoall=trace   # 패키지별.로그레벨 지정
-  logging.file=src/main/resources/board_log.log  # 로그 메시지 파일 출력 
+  logging.file=src/main/resources/board_log.log  # 로그 메시지 파일 출력
   # 2.7.6 부터는 다음과 같이 사용
   #logging.file.name=src/main/resource/board_log.log
-  ```
+```

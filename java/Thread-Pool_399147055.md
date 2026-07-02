@@ -1,38 +1,18 @@
-<div id="page">
-
-<div id="main" class="aui-page-panel">
-
-<div id="main-header">
-
-<div id="breadcrumb-section">
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Java](Java_25001989.md)
 4.  [Java Basic](Java-Basic_399278081.md)
 5.  [Thread](Thread_40042767.md)
 
-</div>
+# Programming : Thread Pool
 
-# <span id="title-text"> Programming : Thread Pool </span>
-
-</div>
-
-<div id="content" class="view">
-
-<div class="page-metadata">
-
-Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 2023
-
-</div>
-
-<div id="main-content" class="wiki-content group">
+Created by Dongwook Han, last modified on 6월 16, 2023
 
 # 스레드 풀(Thread Pool)
 
 - 병렬 작업 처리가 많아져서 스레드 개수가 증가되면 CPU busy, memory 사용량 증가 → 어플리케이션 성능 저하
 
-- 갑작스런 병렬 작업의 폭증으로 인한 **<u>스레드의 폭증 방지</u>** → 스레드풀 사용
+- 갑작스런 병렬 작업의 폭증으로 인한 **스레드의 폭증 방지** → 스레드풀 사용
 
 - Thread Pool 제공 interface 와 클래스 : ExecutorService, Executors
 
@@ -43,34 +23,18 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - ExecutorService 구현 객체는 Executors 클래스의 다음 두 가지 메소드 중 하나를 이용해서 생성
 
   - newCahcedThreadPool() : 초기 스레드, 코어 스레드 수 0, Integer.MAX_VALUE 만큼 스레드 생성(운영체제의 성능과 상황에 따라 결정)
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+```java
+java
     ExecutorService executorService = Executors.newCachedThreadPool();
-    ```
+```
 
-    </div>
-
-    </div>
-
-  - newFixedThreadPool(int nThreads) : 초기 스레드 수 0, 코어 스레드 수 nThreads, 최대 스레드 수 nThreads
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+- newFixedThreadPool(int nThreads) : 초기 스레드 수 0, 코어 스레드 수 nThreads, 최대 스레드 수 nThreads
+```java
+java
     ExecutorService executorService = Executors.newFixedThreadPool(
       Runtime.getRuntime().availableProcessors()  // cpu 코어의 수만큼 최대 스레드 수 사용
     );
-    ```
-
-    </div>
-
-    </div>
+```
 
 - ThreadPoolExecutor 객체 생성하여 스레드 풀 생성
 
@@ -79,12 +43,8 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
   - newCachedThreadPool(), newFixedThreadPool() 도 내부적으로 ThreadPoolExecutor 사용하여 생성됨
 
   - 예제
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+```java
+java
     ExecutorService threadPool = new ThreadPoolExecutor(
       3, // 코어 스레드 개수
       100, // 최대 스레드 개수
@@ -92,11 +52,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
       TimeUnit.SECONDS, // 놀고 있는 시간 단위
       new SynchronousQueueMRunnable>() // 작업 큐
       );
-    ```
-
-    </div>
-
-    </div>
+```
 
 ### 스레드 풀 종료
 
@@ -106,8 +62,6 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 
 - ExecutorService 제공 종료 메소드
 
-<div class="table-wrap">
-
 |  |  |  |
 |----|----|----|
 | **리턴타입** | **메소드명** | **설명** |
@@ -115,23 +69,13 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 | List\<Runnable\> | shutdownNow() | 현재 작업 처리 중인 스레드를 interrupt 해서 작업 중지를 시도하고 스레드풀을 종료. 리턴 값은 작업 큐에 있는 미처리된 작업(Runnale) 의 목록 |
 | boolean | awaitTermination(long timeout, TimeUnit unit) | shutdown() 메소드 호출 이후, 모든 작업 처리를 timeout 시간 내에 완료하면 true 리턴, 완료하지 못하면 작업 처리 중인 스레드를 interrupt 하고 false 리턴 |
 
-</div>
-
 - 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   executorService.shutdown();
 
   executorService.shutdownNow();
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 작업 생성과 처리 요청
 
@@ -142,12 +86,8 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - 작업 처리 완료 후 리턴 값이 있느냐 없느냐의 차이 : Runnable, Callable
 
 - 코드 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   // Runnable  구현 클래스
   Runnable task = new Runnable(){
     @Override
@@ -164,11 +104,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
       return T;
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ### 작업 처리 요청
 
@@ -187,16 +123,12 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
   - submit() 작업처리 도중 예외 발생시 스레드 종료 되지 않고 다음 작업을 위해 재사용됨 → 스레드의 생성 오버헤드 줄이는 효과
 
 - execute() 코드 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   public class ExecuteExample {
     public static void main(String[] args) throws Exception {
       ExecutorService executorService = Executors.newFixedThreadPol(2); // 최대 스레드 2인 풀 생성
-      
+
       for(int i = 0; i < 10; i++) {
         Runnable runnable = new Runnable(){
           @Override
@@ -209,18 +141,14 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
             int value = Integer.parseInt("삼");
           }
         };
-        executorService.execute(runnable); 
+        executorService.execute(runnable);
         // executorService.submit(runnable);
         Thread.sleep(10);  // 콘솔에 출력 시간을 주기 위해 0.01 초 일시 정지시킴
       }
       executorService.shudown();  // 스레드풀 종료
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 블로킹 방식의 작업 완료 통보
 
@@ -241,16 +169,12 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - 리턴값이 없는 작업일 경우 Runnable 객체로 생성하면 됨
 
 - 예제 코드
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   public class NoResultExample {
     public static void main(String[] args){
       ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-      
+
       System.out.println("작업 처리 요청");
       Runnable runnable = new Runnable() {
         @Override
@@ -263,7 +187,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
         }
       };
       Future future = executorService.submit(runnable);
-      
+
       try {
         future.get();
         System.out.println("[작업 처리 완료]");
@@ -273,11 +197,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
       executorService.shutdown();
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ### 리턴값이 있는 작업 완료 통보
 
@@ -286,16 +206,12 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - Generic Type 파라미터 T는 call() 메소드가 리턴하는 타입이 되도록 주의
 
 - 코드 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   public class ResultByCallableExample {
     public static void main(String[] args){
       ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-      
+
       System.out.println("작업 처리 요청");
       Callable<Integer> task = new Callable<Integer>() {
         @Override
@@ -308,7 +224,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
         }
       };
       Future<Integer> future = executorService.submit(task);
-      
+
       try {
         int sum = future.get();
         System.out.println("[처리 결과] " + sum);
@@ -319,11 +235,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
       executorService.shutdown();  // 스레드 풀 종료
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ### 작업 처리 결과를 외부 객체에 저장
 
@@ -336,23 +248,19 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - 외부 Result 객체를 생성자를 통해 주입받아야 함.
 
 - 코드 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   public class ResultByRunnableExample {
     public static void main(String[] args){
       ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-      
+
       System.out.println("작업 처리 요청");
       class Task implements Runnable {
         Result result;
         Task(Result result) {
           this.result = result;    // 외부 Result 객체를 필드에 저장
         }
-        
+
         @Override
         public void run() {
           int sum = 0;
@@ -362,13 +270,13 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
           result.addValue(sum);    //. Result 객체에 작업 결과 저장
         }
       }
-      
+
       Result result = new Result();
       Runnable task1 = new Task(result);
       Runnable task2 = new Task(result);
       Future<Result> future1 = executorService.submit(task1, result);
       Future<Result> future2 = executorService.submit(task2, result);
-      
+
       try {
         result = future1.get();
         result = future2.get();
@@ -388,11 +296,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
       accumValue += value;
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ### 작업 완료 순으로 통보
 
@@ -403,18 +307,14 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - poll(), task() 메소드 사용
 
 - 샘플 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   public class CompletionServiceExample extends Thread{
     public static void main(String[] args){
       ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-      
+
       CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(executorService);
-      
+
       System.out.println("작업 처리 요청");
       for(int i = 1; i <= 3; i++) {
         completionService.submit(new Callable<Integer>() {
@@ -428,7 +328,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
           }
         });
       }
-    
+
       System.out.println("[처리 완료된 작업 확인] ");
       executorService.submit(new Runnable() {
         @Override
@@ -444,7 +344,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
           }
         }
       });
-      
+
       try {
         Thread.sleep(3000);
       } catch(InterruptedException e){
@@ -452,11 +352,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
       executorService.shutdown();
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 콜백 방식의 작업 완료 통보
 
@@ -464,7 +360,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 
 - 스레드가 작업을 완료하면 특정 메소드(콜백 메소드)를 자동 실행하는 기법
 
-<span class="confluence-embedded-file-wrapper image-center-wrapper"><img src="./media/attachments/399147055/399179792.png" class="confluence-embedded-image image-center" loading="lazy" data-image-src="attachments/399147055/399179792.png" data-height="236" data-width="546" data-unresolved-comment-count="0" data-linked-resource-id="399179792" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="blocking_callback.png" data-base-url="https://never4got10.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="399147055" data-linked-resource-container-version="3" data-media-id="b84edd90-1191-4263-95b9-37ec2968ad58" data-media-type="file" /></span>
+![](attachments/399147055/399179792.png)
 
 - 블로킹 방식 : 작업 처리를 요청한 후 작업이 완료될 때까지 블로킹 됨
 
@@ -475,18 +371,14 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - Runnable 구현 클래스 작성할 때 콜백 기능 구현
 
 - 콜백 기능 구현 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   // CompletionHandler 를 사용하여 콜백 메소드 구현
   CompletionHandler<V, A> callback = new CompletionHandler<V, A> () {
     // 작업 정상 처리시 호출
     @Override
     public void completed(V result, A attachment){}
-    
+
     // 작업 처리 도중 예외 발생시 호출
     @Override
     public void failed(Throwable exc, A attachment){}
@@ -505,42 +397,34 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
       }
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 콜백 방식의 작업 완료 통보 받는 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   public class CallbackExample {
     private ExecutorService executorService;
-    
+
     public CallbackExample() {
       executorService = Executors.newFixedThreadPool(
         Runtime.getRuntime().availableProcessors();
       );
     }
-    
-    // callback 정의하기 
-    private CompletionHandler<Integer, Void> callback = 
+
+    // callback 정의하기
+    private CompletionHandler<Integer, Void> callback =
     new CompletionHandler<Integer, Void>() {
       @Override
       public void completed(Integer result, Void attachment) {
         System.out.println("completed() 실행; " + result);
       }
-      
+
       @Override
       public void failed(Throwable exc, Void attachment) {
         System.out.println("failed() 실행 : " + exc.toString());
       }
     };
-    
+
     public void doWork(final String x, final String y) {
       Runnable task = new Runnable()  {
         @Override
@@ -557,11 +441,11 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
       };
       executorService.submit(task);
     }
-    
+
     public void finish() {
       executorService.shutdown();
     }
-    
+
     public static void main(String[] args) {
       CallbackExample example = new CallbackExample();
       example.doWork("3","3");
@@ -569,11 +453,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
       example.finish();
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ### Executors
 
@@ -586,33 +466,21 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - Executors의 내부 pool의 모든 Thread는 revenant 작업을 위해 내부에서 재사용되므로 하나의 executor Service에서 어플리케이션 수명주기동안 많은 동시 작업을 수행할 수 있음.
 
 - Executor 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ExecutorService executor = Executors.newSingleThreadExecutor();
   executor.submit(() -> {
     String threadName = Thread.currentThread().getName();
     System.out.println("Hello " + threadName);
   });
   // => Hello pool-1-thread-1
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 위의 Thread 예제와 달리 Executors는 명시적으로 종료정의를 해주지 않으면 새로운 Task를 대기하면서 기다린다.
 
 - ExecutorService를 종료하기 위해 shutdown() - task가 끝날때까지 기다림, shutdownNow() - 실행 중인 모든 task를 즉시 종료 , 두 메소드를 제공
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   try{
     System.out.println("attempt to shutdown executor");
     executor.shutdown();
@@ -626,21 +494,13 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
     executor.shutdownNow();
     System.out.println("shutdown finished");
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 #### Callables and Futures
 
 - executors는 Callable 이라는 task를 지원하는데 Runnable을 구현한 void task와 달리 결과값을 리턴한다.
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   Callable<Integer> task = () -> {
     try{
       TimeUnit.SECONDS.sleep(1);
@@ -649,21 +509,13 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
       throw new IllegalStateException("task interrupted",e);
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - Callable은 Runnable task와 같이 Executor Service에 submit 되어진다.(executorService.submit() 으로 실행). submit() 메소드는 task이 끝날 때까지 기다리지 않고 executorservice는 값을 직접 리턴하지 않음.
 
 - executor가 Future 유형의 결과를 리턴하는 대신 나중에 실제 결과값을 조회해 온다.
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ExecutorService executor = Executors.newFixedThreadPool(1);
   Future<Integer> future = executor.submit(task);
 
@@ -673,11 +525,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 
   System.out.println("future done? " + future.isDone());
   System.out.println("result : " + result);
-  ```
-
-  </div>
-
-  </div>
+```
 
 - callable task를 실행 한 후, future.isDone() 메소드로 실행이 끝났는지 확인
 
@@ -690,12 +538,8 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - future.get() 호출을 하게 되면 블럭킹하고 대기하게 되는데 안 좋을 경우, 영원히 대기할 수 있음
 
 - 이런 것을 방지하고자 timeout 시간을 설정
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ExecutorService executor = Executors.newFixedThreadPool(1);
 
   Future<Integer> future = executor.submit(() -> {
@@ -707,23 +551,15 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
     }
   });
   future.get(1, TimeUnit.SECONDES); // timeout 1초 설정하여 TimeoutException 발생시킴
-  ```
-
-  </div>
-
-  </div>
+```
 
 #### InvokeAll
 
 - 여러개의 callable에 대한 일괄 처리를 Executor가 지원
 
 - invokeAll() 메소드는 callable의 collection 을 받아 들이고 결과로 future list 반환함
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ExecutorService executor = Executors.newWorkStealingPool();
 
   List<Callable<String>> callables = Arrays.asList(
@@ -741,11 +577,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
       })
       .forEach(System.out::println);
   )
-  ```
-
-  </div>
-
-  </div>
+```
 
 #### InvokeAny
 
@@ -754,12 +586,8 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - invokeAll() 와 약간 다름. Future 객체들을 반환하는 대신 invokeAny()는 첫번째 호출 가능 항목이 종료되고 해당 호출의 결과가 리턴될 때까지 블럭킹됨(최초 하나가 리턴 될 때까지 블럭킹)
 
 - 테스트 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   // 결과를 리턴하기 전에 일정 시간동안 sleep 하는 Callable 객체 정의
   Callable<String> callable(String result, long sleepSeconds) {
     return () -> {
@@ -781,13 +609,9 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
   System.out.println(result);
 
   // => task2
-  ```
+```
 
-  </div>
-
-  </div>
-
-  - **newWorkStealingPool()** 이라는 다른 타입의 executor 생성.
+- **newWorkStealingPool()** 이라는 다른 타입의 executor 생성.
 
   - **ForkJoinPool** 을 만드는데 기존 스레드풀과는 약간 다름
 
@@ -798,29 +622,21 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - ScheduledExecutorService 는 주기적으로 작업을 스케줄링하거나 어느 정도 시간이 지난 후 수행하고도 함
 
 - 샘플 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
   Runnable task = () -> System.out.println("Scheduling: " + System.nanoTime());
-  // ScheduledFuture 사용 
+  // ScheduledFuture 사용
   ScheduledFuture<?> future = executor.schedule(task, 3, TimeUnit.SECONDS);
 
   TimeUnit.MILLISECONDS.sleep(1337);
 
   long remainingDelay = future.getDelay(TimeUnit.MILLISECONDS);
   System.out.println("Remaining Delay: %sms", remainingDelay);
-  ```
+```
 
-  </div>
-
-  </div>
-
-  - 작업을 스케쥴링할 때 그 결과로 SheduledFuture 를 다룬다.
+- 작업을 스케쥴링할 때 그 결과로 SheduledFuture 를 다룬다.
 
   - getDelay() 메소드는 남아 있는 시간을 측정?
 
@@ -829,12 +645,8 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - scheduleAtFixedRate() : 고정된 시간 비율로 작업 수행
 
 - 매 초마다 주기적으로 console에 출력하는 수행하는 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ScheduledExecutorService executor = Executors.newScheduledThreadPool();
 
   Runnable task = () -> System.out.println("Scheduling: " + System.nanotime());
@@ -842,23 +654,15 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
   int initialDeply = 0;
   innt period = 1;
   executor.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.SECONDS);
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 이 작업은 처음 시작하기 전까지의 지연시간은 허용함
 
 - scheduleAtFixedRate() 은 작업의 수행 시간을 고려하지 않기 때문에, 만약 수행이 2초가 걸리는 작업을 1초마다 수행하도록 하면 스레드풀은 최대 용량으로 작동함 =\> 이 경우는 scheduleWithFixedDealy() 사용을 고려
 
 - scheduleWithFixedDelay() 작업 종료와 다음 작업 시작 사이에 대기 시간이 적용됨
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ScheduledExecutorService executor = Executors.newScheduledThreadPool();
 
   Runnable task = () -> {
@@ -870,42 +674,26 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
     }
   };
 
-  executor.schedulWithFixedDelay(task, 0, 1, TieUnit.SECONDS);  // 스레드가 종료되고 다시 시작하기 까지 1초의 시간 설정 
-  ```
-
-  </div>
-
-  </div>
+  executor.schedulWithFixedDelay(task, 0, 1, TieUnit.SECONDS);  // 스레드가 종료되고 다시 시작하기 까지 1초의 시간 설정
+```
 
 ### Synchronized
 
 - 여러 스레드에서 동시에 공유 가변 변수에 엑세스 할 때
 
 - 다음 예제의 increment() 메소드를 여러 스레드가 같이 사용할 때 문제가 발생됨
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   int count = 0;
-   
+
    void increment() {
     count = count + 1;
    }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 다음과 같이 thread pool 에서 사용시 실제 결과를 10000이 아닌 실행할 때마다 다른 결과를 보게 된다.
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ExecutorService executor = Executors.newFixedThreadPool(2);
 
   IntStream.range(0, 10000)
@@ -913,37 +701,21 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
   stop(executor);
 
   System.out.println(count);
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 경합 상태를 초래하는 이 변수에 대한 엑세스를 동기화 하지 않고 서로 다른 스레드에서 공유하기 때문에 값이 그때 그때 달라짐
 
 - 다음과 같이 공유 객체에 동기화를 적용하여 스레드 동기화를 지원
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   synchronized void incrementSync() {
     count = count + 1;
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - incrementSync()를 실행할 때마다 원하는 결과 10000을 얻게 됨. 더 이상 경합 상태가 아님
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ExecutorService executor = Executors.newFixedThreadPool(2);
 
   IntStream.range(0, 10000)
@@ -951,29 +723,17 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
   stop(executor);
 
   System.out.println(count);
-  ```
-
-  </div>
-
-  </div>
+```
 
 - synchronized 키워드를 메소드가 아닌 블럭에도 사용 가능하다.
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   void incrementSync() {
     synchronized(this) {
       count = count + 1;
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 내부적으로 java는 동기화를 관리하기 위해 monitor lock 도는 intrinsic lock 이라는 모니터를 사용
 
@@ -1000,12 +760,8 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - ReentrantLock 클래스는 synchronized 키워드를 통해 엑세스되는 암시적 모니터와 기본 동작이 동일
 
 - 암시적 모니터보다 기능이 확장된 상호 배제 잠금
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ReentrantLock lock = new ReentrantLock();
   int count = 0;
 
@@ -1014,26 +770,18 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
     try {
       count++;
     } finally {
-      lock.unlock(); // 잠금 해제 선언 
+      lock.unlock(); // 잠금 해제 선언
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 명시적으로 잠금 선언과 잠금 해제를 구현하며 예외 발생시를 고려하여 finally 에 잠금 해제를 구현
 
 - 이미 잠금 선언이 되어 있을 경우에 다른 스레드가 잠금 선언을 하더라도 대기하고 현재 잠금 상태가 해제 될때까지 중지함.
 
 - 세밀한 제어를 위한 Locks 이 지원하는 여러 메소드 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ExecutorService executor = Executors.newFixedThreadPool(2);
   ReentrantLock lock = new ReentrantLock();
 
@@ -1042,25 +790,21 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
     try{
       sleep(1);
     } finally {
-      lock.unlock();   // 잠금 해제 선언 
+      lock.unlock();   // 잠금 해제 선언
     }
   });
 
   executor.submit(() -> {
-    System.out.println("Locked: " + lock.isLocked());   // 잠금 여부 체크 
+    System.out.println("Locked: " + lock.isLocked());   // 잠금 여부 체크
     System.out.println("Held by me: " + lock.isHeldByCurrentThread());  // 현재 어떤 스레드가 잠금했는지 여부
     boolean locked = lock.tryLock();
     System.out.println("Lock acquired: " + locked);
   });
 
   stop(executor);
-  ```
+```
 
-  </div>
-
-  </div>
-
-  - 첫번째 스레드가 1초 동안 잠금처리할 동안 두번째 스레드가 잠금의 현재 상태에 대한 정보를 얻어서 출력하는 예제
+- 첫번째 스레드가 1초 동안 잠금처리할 동안 두번째 스레드가 잠금의 현재 상태에 대한 정보를 얻어서 출력하는 예제
 
   - tryLock() 메서드는 현재 스레드를 일시 중지하지 않고 잠금을 획득하려고 시도
 
@@ -1073,15 +817,11 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - 쓰기 잠금을 하는 스레드가 없는 한 여러 스레드가 읽기 잠금을 동시에 유지
 
 - 읽기가 더 자주 발생하는 경우 성능과 처리량이 향상
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ExecutorService executor = Executors.newFixedThreadPool(2);
   Map<String, String> map = new HashMap<>();
-  ReadWriteLock lock = new ReentrantReadWriteLock();  // 읽기쓰기 lock 선언 
+  ReadWriteLock lock = new ReentrantReadWriteLock();  // 읽기쓰기 lock 선언
 
   executor.submit(() -> {
     lock.writeLock().lock();
@@ -1092,21 +832,13 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
       lock.writeLock().unlock();
     }
   });
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 쓰기 lock 을 갖는 예제
 
 - 다음 읽기 lock을 갖는 스레드는 쓰기 lock 이 끝날 때까지 대기한 후, 동시에 읽는다.
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   Runnable readTask = () -> {
     lock.readLock().lock();
     try{
@@ -1121,11 +853,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
   executor.submit(readTask);
 
   stop(executor);
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 읽기 쓰레드는 동시에 안전하게 읽기 잠금을 획득하여 처리
 
@@ -1140,12 +868,8 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - 또한 Stamped locks 는 낙관적 잠금이라는 다른 잠금 모드를 지원
 
 - 읽기쓰기 잠금 예제를 StampedLock 으로 변경한 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ExecutorService executor = Executors.newFixedThreadPool(2);
   Map<String, String> map = new HashMap<>();
   StampedLock lock = new StampedLock();
@@ -1174,26 +898,18 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
   executor.submit(readTask);
 
   stop(executor);
-  ```
-
-  </div>
-
-  </div>
+```
 
 - readLock(), writeLock() 을 통해 나중에 잠금 해제에 사용되는 stamp을 얻음
 
 - 낙관적 잠금 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ExecutorService executor = Executors.newFixedThreadPool(2);
   StampedLock lock = new StampedLock();
 
   executor.submit(() -> {
-    long stamp = lock.tryOptimisticRead();  // stamp 정보 가져오기 
+    long stamp = lock.tryOptimisticRead();  // stamp 정보 가져오기
     try{
       System.out.println("Optimistic Lock Valid: "+ lock.validate(stamp));
       sleep(1);
@@ -1217,11 +933,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
   });
 
   stop(executor);
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 낙관적 읽기 잠금은 잠금이 실제로 사용 가능한지 여부에 관계 없이 항상 현재 스레드를 차단하지 않고 stamp를 반환하는 tryOptimisticRead() 를 호출
 
@@ -1230,39 +942,27 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
 - lock.validate(stamp) 를 호출하여 stamp가 유효한지 항상 확인
 
 - 앞의 예제의 결과 값은 다음과 같음
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```text
+text
   Optimistic Lock Valid : true
   Write Lock acquired
   Optimistic Lock Valid : false
   Write done
   Optimistic Lock Valid : false
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 낙관적 잠금은 잠금을 획득한 직후에 유효
 
 - 가끔은 잠금을 해제했다가 잠그지 않고 읽기 잠금을 쓰기 잠금으로 변환하는 것이 유용
 
 - 예제코드
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ExecutorService executor = Executors.newFixedThreadPool(2);
   StampedLock lock = new StampedLock();
 
   executor.submit(() -> {
-    long stamp = lock.readLock();  // stamp 정보 가져오기 
+    long stamp = lock.readLock();  // stamp 정보 가져오기
     try{
       if(count == 0) {
         stamp = lock.tryConvertToWriteLock(stamp);
@@ -1274,18 +974,13 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 6월 16, 
       }
       System.out.println(count);
     } finally {
-      lock.unlock(stamp);   
+      lock.unlock(stamp);
     }
   });
 
   stop(executor);
-  ```
-
-  </div>
-
-  </div>
-
-<a href="https://winterbe.com/posts/2015/04/30/java8-concurrency-tutorial-synchronized-locks-examples/" class="external-link" data-card-appearance="inline" rel="nofollow">https://winterbe.com/posts/2015/04/30/java8-concurrency-tutorial-synchronized-locks-examples/</a>
+```
+[https://winterbe.com/posts/2015/04/30/java8-concurrency-tutorial-synchronized-locks-examples/](https://winterbe.com/posts/2015/04/30/java8-concurrency-tutorial-synchronized-locks-examples/)
 
 StampedLock 보충 필요
 
@@ -1298,12 +993,8 @@ StampedLock 보충 필요
 - 세모포어는 모든 허가 집합을 유지 → 어플리케이션의 특정 부분을 동시에 허가하는 양을 제한하고자 할 때 유용함
 
 - 장기 실행 작업에 대한 엑세스를 제한하는 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   ExecutorService executor = Executors.newFixedThreadPool(10);
 
   Semaphore semaphore = new Semaphore(5);
@@ -1331,17 +1022,13 @@ StampedLock 보충 필요
       .forEach(i -> executor.submit(longRunningTask));
 
   stop(executor);
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 스레드 풀은 동시에 10개의 작업을 실행할 수 있지만 크기 5인 세마포어를 사용하므로 동시 엑세스를 5로 제한
 
 - finally 에 세마포어를 적절하게 해제하도록 정의
 
-<a href="https://winterbe.com/posts/2015/05/22/java8-concurrency-tutorial-atomic-concurrent-map-examples/" class="external-link" data-card-appearance="inline" rel="nofollow">https://winterbe.com/posts/2015/05/22/java8-concurrency-tutorial-atomic-concurrent-map-examples/</a>
+[https://winterbe.com/posts/2015/05/22/java8-concurrency-tutorial-atomic-concurrent-map-examples/](https://winterbe.com/posts/2015/05/22/java8-concurrency-tutorial-atomic-concurrent-map-examples/)
 
 ## CompletableFuture
 
@@ -1364,12 +1051,8 @@ StampedLock 보충 필요
 - 작업 유형
 
   - runAsync() : 반환값이 없는 경우, 비동기로 작업 실행
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+```java
+java
     @Test
     void runAsync() throws ExecutionException, InterruptedException {
       CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
@@ -1378,19 +1061,11 @@ StampedLock 보충 필요
       future.get();
       System.out.println("Thread: " + Thread.currentThread().getName());
     }
-    ```
+```
 
-    </div>
-
-    </div>
-
-  - supplyAsync() : 반환값이 있는 경우, 비동기로 작업 실행
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+- supplyAsync() : 반환값이 있는 경우, 비동기로 작업 실행
+```java
+java
     @Test
     void supplyAsync() throws ExecutionException, InterruptedException {
       CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
@@ -1399,25 +1074,17 @@ StampedLock 보충 필요
       System.out.println(future.get());
       System.out.println("Thread: " + Thread.currentThread().getName());
     }
-    ```
+```
 
-    </div>
-
-    </div>
-
-  - runAsync와 supplyAsync는 자바7에 추가된 ForkJoinPool의 commonPool을 사용해 작업을 실행할 스레드를 얻어 사용. 필요한 경우 ExecutorService를 파라미터로 넘겨주어서 사용
+- runAsync와 supplyAsync는 자바7에 추가된 ForkJoinPool의 commonPool을 사용해 작업을 실행할 스레드를 얻어 사용. 필요한 경우 ExecutorService를 파라미터로 넘겨주어서 사용
 
   - 작업 콜백
 
     - thenApply : 반환값을 받아 다른 값을 반환
 
     - 함수형 인터페이스 Fuction을 파라미터로 받음
-
-      <div class="code panel pdl" style="border-width: 1px;">
-
-      <div class="codeContent panelContent pdl">
-
-      ``` syntaxhighlighter-pre
+```java
+java
       @Test
       void thenApply() throws ExecutionException, InterruptedException {
         CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
@@ -1427,21 +1094,13 @@ StampedLock 보충 필요
         });
         System.out.println(future.get());
       }
-      ```
+```
 
-      </div>
-
-      </div>
-
-    - thenAccept : 반환 값을 받아 처리하고 값을 반환하지 않음
+- thenAccept : 반환 값을 받아 처리하고 값을 반환하지 않음
 
     - 함수형 인터페이스 Consumer를 파라미터로 받음
-
-      <div class="code panel pdl" style="border-width: 1px;">
-
-      <div class="codeContent panelContent pdl">
-
-      ``` syntaxhighlighter-pre
+```java
+java
       @Test
       void thenAccept() throws ExecutionException, InterruptedException {
         CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
@@ -1451,21 +1110,13 @@ StampedLock 보충 필요
         });
         System.out.println(future.get());
       }
-      ```
+```
 
-      </div>
-
-      </div>
-
-    - thenRun : 반환 값을 받지 않고 다른 작업 실행
+- thenRun : 반환 값을 받지 않고 다른 작업 실행
 
     - 함수형 인터페이스 Runnable을 파라미터로 받음
-
-      <div class="code panel pdl" style="border-width: 1px;">
-
-      <div class="codeContent panelContent pdl">
-
-      ``` syntaxhighlighter-pre
+```java
+java
       @Test
       void thenRun() throws ExecutionException, InterruptedException {
         CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
@@ -1475,32 +1126,24 @@ StampedLock 보충 필요
         });
         future.get();
       }
-      ```
+```
 
-      </div>
-
-      </div>
-
-  - 작업 조합
+- 작업 조합
 
     - thenCompose
 
       - 두 작업이 이어서 실행하도록 조합하여 앞선 작업의 결과를 받아 사용
 
       - 함수형 인터페이스 Function 파라미터 인자
-
-        <div class="code panel pdl" style="border-width: 1px;">
-
-        <div class="codeContent panelContent pdl">
-
-        ``` syntaxhighlighter-pre
+```java
+java
         @Test
         void thenCompose() throws ExecutionException, InterruptedException {
           CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
             return "hello";
           });
-          
-          // Future 간에 연관관계가 있는 경우 
+
+          // Future 간에 연관관계가 있는 경우
           CompletableFuture<String> future = hello.thenCompose(this::mangkyu);
           System.out.println(future.get());
         }
@@ -1510,80 +1153,56 @@ StampedLock 보충 필요
             return message + "" + "Mangkyu";
           });
         }
-        ```
+```
 
-        </div>
-
-        </div>
-
-    - thenCombine
+- thenCombine
 
       - 두 작업을 독립적으로 실행하고, 둘 다 완료되었을 때 콜백 실행
 
       - 함수형 인터페이스 Function 파라미터 인자
-
-        <div class="code panel pdl" style="border-width: 1px;">
-
-        <div class="codeContent panelContent pdl">
-
-        ``` syntaxhighlighter-pre
+```java
+java
         @Test
         void thenCombine() throws ExecutionException, InterruptedException {
           CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
             return "hello";
           });
-          
+
           CompletableFuture<String> mangkyu = CompletableFuture.supplyAsync(() -> {
             return "mangkyu";
           });
-          
+
           CompletableFuture<String> future = hello.thenCombine(mangkyu, (h,w) -> h + " " + w);
           System.out.println(future.get());
         }
-        ```
+```
 
-        </div>
-
-        </div>
-
-    - allOf : 여러 작업들을 동시에 실행하고 모든 작업 결과에 콜백 실행
-
-      <div class="code panel pdl" style="border-width: 1px;">
-
-      <div class="codeContent panelContent pdl">
-
-      ``` syntaxhighlighter-pre
+- allOf : 여러 작업들을 동시에 실행하고 모든 작업 결과에 콜백 실행
+```java
+java
       @Test
       void allOf() throws ExecutionException, InterruptedException {
         CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
           return "hello";
         });
-        
+
         CompletableFuture<String> mangkyu = CompletableFuture.supplyAsync(() -> {
           return "mangkyu";
         });
-        
+
         List<CompletableFuture<String>> futures = List.of(hello, mangkyu);
-        
+
         CompletableFuture<List<String>> result = CompletableFuture.allOf(future.toArray(new CompletableFuture[futures.size]))
             .thenApply( v -> futures.stream()
                              .map(CompletableFuture::join)
                              .collect(Collecotrs.toList()));
         result.get().forEach(System.out::println);
       }
-      ```
+```
 
-      </div>
-
-      </div>
-
-    - anyOf : 여러 작업들 중에서 가장 빨리 끝난 하나의 결과에 콜백을 실행
-
-      <div class="code panel pdl" style="border-width: 1px;">
-
-      <div class="codeContent panelContent pdl">
-
-      ``` syntaxhighlighter-pre
+- anyOf : 여러 작업들 중에서 가장 빨리 끝난 하나의 결과에 콜백을 실행
+```java
+java
       @Test
       void anyOf() throws ExecutionException, InterruptedException {
         CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
@@ -1594,29 +1213,21 @@ StampedLock 보충 필요
           }
           return "hello";
         });
-        
+
         CompletableFuture<String> mangkyu = CompletableFuture.supplyAsync(() -> {
           return "mangkyu";
         });
-        
+
         CompletableFuture<String> future = hello.anyOf(hello, mangkyu).thenAccept(System.out::println);
         future.get();
       }
-      ```
+```
 
-      </div>
-
-      </div>
-
-  - 예외처리
+- 예외처리
 
     - exceptionally : 발생한 에러를 받아서 처리
-
-      <div class="code panel pdl" style="border-width: 1px;">
-
-      <div class="codeContent panelContent pdl">
-
-      ``` syntaxhighlighter-pre
+```java
+java
       @ParameterizedTest // 동일한 테스트를 다른 파라미터로 여러 번 실행할 수 있도록 처리
       @jValueSource(booleans = {true, false})
       void exceptionally(boolean doThrow) throws ExecutionException, InterruptedException {
@@ -1630,19 +1241,11 @@ StampedLock 보충 필요
         });
         System.out.println(future.get());
       }
-      ```
+```
 
-      </div>
-
-      </div>
-
-    - handler, handleAsync : (결과값, 에러) 를 반환받아 둘 다 처리
-
-      <div class="code panel pdl" style="border-width: 1px;">
-
-      <div class="codeContent panelContent pdl">
-
-      ``` syntaxhighlighter-pre
+- handler, handleAsync : (결과값, 에러) 를 반환받아 둘 다 처리
+```java
+java
       @ParameterizedTest // 동일한 테스트를 다른 파라미터로 여러 번 실행할 수 있도록 처리
       @jValueSource(booleans = {true, false})
       void handle(boolean doThrow) throws ExecutionException, InterruptedException {
@@ -1656,44 +1259,9 @@ StampedLock 보충 필요
         });
         System.out.println(future.get());
       }
-      ```
-
-      </div>
-
-      </div>
-
-</div>
-
-<div class="pageSection group">
-
-<div class="pageSectionHeader">
+```
 
 ## Attachments:
 
-</div>
-
-<div class="greybox" align="left">
-
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [blocking_callback.png](attachments/399147055/399179792.png) (image/png)\
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div id="footer" role="contentinfo">
-
-<div class="section footer-body">
-
+![](./media/images/icons/bullet_blue.gif) [blocking_callback.png](attachments/399147055/399179792.png) (image/png)
 Document generated by Confluence on 4월 05, 2026 17:57
-
-
-
-</div>
-
-</div>
-
-</div>
