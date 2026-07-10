@@ -387,8 +387,231 @@ Animal.prototype.say = function() {
     this.b = value;
   }
 ```
- - function을 쓸 필요 없이 set, get 으로 Setter, Getter언
+ - function을 쓸 필요 없이 set, get 으로 Setter, Getter 선언
 
+## 상속
+- 기존 클래스를 확장
+- 부모 클래스 호출 시 super 사용
+- 예제
+	```javascript
+	class Person {
+		constructor(name, first, second) {
+			this.name = name;
+			this.first = first;
+			this.second = second;
+		}
+		sum() {
+			return this.first + this.second;
+		}
+	}
+	
+	class PersonPlus extends Person {
+		constructor(name, first, second, third) {
+			super(name, first, second);
+			this.third = third;
+		}
+		
+		sum() {
+			return super.sum() + this.third;
+		}
+		
+		avg() {
+			reutrn (this.first + this.second + this.third)/3;
+		}
+	}
+	
+	var kim = new PersonPlus('kim', 10, 20, 30);
+	console.log("kim.sum()", kim.sum());
+	console.log("kim.avg()", kim.avg());
+	```
+- 자바 스크립트는 Object간에 상속도 가능함.
+- **객체가 직접 다른 객체를 상속 받을 수 있고 얼마든지 상속 관계를 바꿀 수 있음**
+- super object로 부터 상속을 받고 있는 sub object가 다른 객체로부터 상속을 받고 싶다면 링크만 바꾸면 됨 : prototype link
+- prototype link가 가르키는 객체를 prototype object 라고 함.
+
+### Proto
+- 자바 스크립트 class를 사용하지 않고 \__proto\__를 사용해 상속
+- \__proto\__ 라는 prototype link를 통해서 객체를 상속 받음
+- 예제
+	```javascript
+	var superObj = {superVal:'super'}
+	var subObj = {subVal:'sub'}
+	subObj.__proto__ = superObj;
+	consolelog('subObj.subVal => ', subObj.subVal);
+	consolelog('subObj.superVal =>', subObj.superVal);
+	```
+- 추가 설명
+	- 자바스크립트는 프로토타입 기반 언어라고 함
+	- 모든 객체들이 메소드와 속성들을 상속받기 위한 명세로 Prototype 객체를 가짐
+	- 쉽게 말하면 모든 함수, 변수 등은 프로토 타입 객체와 연동되어 관리하고 있다.
+### Object.create()
+- 객체를 상속하는 새로운 객체 생성
+- \__proto\__의 대체제
+- 예제
+```javascript
+var superObj = {superVal: 'super'}
+var subObj = Object.create(superObj);
+subObj.subVal = 'sub';
+
+console.log('subObj.subVal =>', subObj.subVal);
+console.log('subObj.superVal =>', subObj.superVal);
+
+subObj.superVal = 'sub';
+console.log('superObj.superVal =>', superObj.superVal);
+```
+
+- html 파일 내에 위의 js를 포함한 후, console 선언 전에 debugger 키워드 추가
+- 웹 브라우저 개발자 도구에서 실행 중 해당 부분 멈춤
+- subObj.\__proto\__ = superObj로 설정됨이 확인됨.
+
+## 객체와 함수
+- 설명하고자 하는 주요 내용은 자바 스크립트에서 함수도 객체이기 때문에 자체 메소드 call, bind를 가지고 있음
+### Call
+- 객체와 관련 없는 함수를 연결하는 방법 : call
+- 자바 스크립트에서 함수도 객체이므로 call() 메소드를 가지고 있음. call을 사용하여 객체를 지정할 수 있음
+	```javascript
+	var kim = {name:'kim', first:10, second:20}
+	var lee = {name: 'lee', first:10, second:10}
+	
+	// this 지정되어 있지 않음
+	function sum() {
+		return this.first + this.second;
+	}
+	
+	// call 함수로 객체를 지정
+	console.log("sum.call(kim)", sum.call(kim));
+	console.log("sum.call(lee)", sum.call(lee));
+	```
+
+- call은 여러 인자를 가질 수 있음
+- 예제
+```javascript
+	var kim = {name:'kim', first:10, second:20}
+	var lee = {name: 'lee', firstL10, second:10}
+	
+	// 필요없는 선언
+	//lee.__proto__ = kim
+	
+	// prefix는 call의 두번째 인자로 취급됨
+	function sum(prefix) {
+		return prefix + (this.first + this.second);
+	}
+	
+	// call 함수로 객체를 지정
+	console.log("sum.call(kim)", sum.call(kim,'=>'));
+	console.log("sum.call(lee)", sum.call(lee,':'));
+```
+
+### bind
+- call은 실행할 때마다 this 객체를 지정하여 사용
+- 객체를 내부적으로 고정하고자 할 때에는 bind 사용
+- 예제
+	```javascript
+	var kim = {name:'kim', first:10, second:20}
+	var lee = {name: 'lee', first:10, second:10}
+	
+	// this 지정되어 있지 않음
+	function sum(prefix) {
+		return prefix + (this.first + this.second);
+	}
+	
+	// call 함수로 객체를 지정
+	console.log("sum.call(kim)", sum.call(kim,'=>'));
+	console.log("sum.call(lee)", sum.call(lee,':'));
+	
+	// sum 함수 호출하기 전에 객체를 지정 
+	var kimSum = sum.bind(kim, '->');
+	console.log('kimSum()', kimSum());
+	```
+
+## prototype vs \__proto\__
+- 자바 스크립트의 함수는 객체이며 프로퍼티를 가질 수 있음
+- 함수를 선언하면 함수 객체와 함수 프로토타입 객체가 생성됨.
+- 예제
+	```javascript
+	function Person (name, first, second) {
+		this.name = name;
+		this.first = first;
+		this.second = second;
+	}
+	// Person Prototype 객체에 sum() 생성
+	Person.prototype.sum = function(){}
+	
+	var kim = new Person('kim', 10, 20)
+	var lee = new Person('leel', 10,10)
+	
+	// Person 객체에서 sum() 메소드를 찾고 없으면 Person.prototype 에서 sum() 찾음
+	kim.sum();
+	```
+- Prototype은 객체가 생성될 때 항상 생성된다고 보면 되고
+- \__proto\__는 객체가 prototype을 참조하는 링크
+
+## 생성자를 통한 상속
+- 상속에서 정의한 Person class를 prototype을 사용하여 구현
+- class를 function 으로 변경
+- 예제
+	```javascript
+	function Person (name, first, second) {
+		this.name = name;
+		this.first = first;
+		this.second = second;
+	}
+	
+	Person.prototype.sum = function() {
+		return this.first + this.second;
+	}
+	
+	function PersonPlus(name, first, second, third) {
+		Person.call(this, name, first, second);
+		this.third = third;
+	}
+	
+	PersonPlus.prototype.avg = function() {
+		reutrn (this.first + this.second + this.third)/3;
+	}
+			
+	var kim = new PersonPlus('kim', 10, 20, 30);
+	console.log("kim.sum()", kim.sum());
+	console.log("kim.avg()", kim.avg());
+	```
+
+- PersonPlus 가 Person을 상속 받았으나 Person.prototype에 정의된 sum 메소드를 호출 못함
+- Person.prototype에 대한 상속 내지 호출이 필요함.
+- PersonPlus.prototype.\__proto\__ = Person.prototype 을 정의
+	- \__proto\__는 deprecated되었기 때문에 Object.create() 을 사용하여 정의
+- 예제
+	```javascript
+	function Person (name, first, second) {
+		this.name = name;
+		this.first = first;
+		this.second = second;
+	}
+	
+	Person.prototype.sum = function() {
+		return this.first + this.second;
+	}
+	
+	function PersonPlus(name, first, second, third) {
+		Person.call(this, name, first, second);
+		this.third = third;
+	}
+	
+	PersonPlus.prototype = Object.create(Person.prototype);
+	
+	// prototype이 Person.prototype으로 변경되면 constructor 변경됨
+	PersonPlus.prototype.constructor = PersonPlus;
+	
+	PersonPlus.prototype.avg = function() {
+		reutrn (this.first + this.second + this.third)/3;
+	}
+			
+	var kim = new PersonPlus('kim', 10, 20, 30);
+	console.log("kim.sum()", kim.sum());
+	console.log("kim.avg()", kim.avg());
+	```
+
+- PersonPlus prototype이 Person.prototype을 바라보도록 했기 때문에 constructor가 Person을 보도록 바뀜
+- PersonPlus.prototype.constructor = PersonPlus 를 재정의해야 함.
 # 모듈
 - 코드의 재활용성을 높이고 유지보수를 쉽게 할 수 있는 방향, 방법 추구
 - 재활용성이 높은 코드를 분리, 별도로 만들어 사용
