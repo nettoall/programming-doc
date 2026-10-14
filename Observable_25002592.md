@@ -1,4 +1,3 @@
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Java](Java_25001989.md)
@@ -33,13 +32,11 @@ public interface Subject{
   void notifyObservers();
 }
 ```
-
 ``` java
 public interface Observer{
   void update(float temperature, float humidity, float pressure);
 }
 ```
-
 ``` java
 public interface DisplayElement{
   void display();
@@ -47,7 +44,6 @@ public interface DisplayElement{
 ```
 
 ### subject class 예제
-
 ``` java
 public class WeatherData implements Subject{
   private List<Observer> observers;
@@ -90,7 +86,6 @@ public class WeatherData implements Subject{
 ```
 
 ### Observer class 예제
-
 ``` java
 public class CurrentConditions implements Observer,DisplayElement{
   private float temperature;
@@ -115,7 +110,6 @@ public class CurrentConditions implements Observer,DisplayElement{
   }
 }
 ```
-
 ``` java
 public class ForecastDisplay implements Observer,DisplayElement{
   private float temperature;
@@ -142,7 +136,6 @@ public class ForecastDisplay implements Observer,DisplayElement{
 ```
 
 ### 실행예제
-
 ``` java
 public class WeatherStation{
   public static void main(String[] args){
@@ -157,10 +150,9 @@ public class WeatherStation{
 }
 ```
 
-## Java 객체를 이용한 예제
-
-- WeatherData 구현
-  ``` java
+## Java 객체를 이용한 예제- WeatherData 구현
+```java
+java
   import java.util.Observable;
   import java.util.Observver;
 
@@ -168,14 +160,14 @@ public class WeatherStation{
     private float temperature;
     private float humidity;
     private float pressure;
-    
+
     public WeatherData(){}
-    
+
     public void measurementsChanged(){
       setChanged();
       notifyObservers();
     }
-    
+
     public void setMeasurementsChanged(float temperature, float humidity, float pressure){
       this.temperature = temperature;
       this.humidity = humidity;
@@ -185,19 +177,20 @@ public class WeatherStation{
     public float getTemperature(){
       return temperature;
     }
-    
+
     public float getHumidity(){
       return humidity;
     }
-    
+
     public float getPressure() {
       return pressure;
     }
   }
-  ```
+```
 
 - CurrentConfitionsDisplay
-  ``` java
+```java
+java
   import java.util.Observable;
   import java.uril.Observer;
 
@@ -205,7 +198,7 @@ public class WeatherStation{
     Observable observable;
     private float temperature;
     private float humidity;
-    
+
     public CurrentConditionsDisplay(Observable observable){
       this.observable = observable;
       observable.addObserver(this);
@@ -219,13 +212,13 @@ public class WeatherStation{
         display();
       }
     }
-    
+
     public void display(){
       System.out.println("Current conditions: " + temperature + " F degrees and " + humidity + "% humidity");
     }
   }
-  ```
+```
 
 ## Attachments:
 
-- [Observer_interface.jpg](./attachments/25002592/25002608.jpg) (image/jpeg)\
+- [Observer_interface.jpg](./attachments/25002592/25002608.jpg) (image/jpeg)

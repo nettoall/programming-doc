@@ -5,12 +5,12 @@
 | Key         | PROGRAMMIN                             |
 | Name        | Programming                            |
 | Description |                                        |
-| Created by  | 59fa7e5ac14d1e37ad1d9fcd (7월 20, 2020) |
+| Created by | 59fa7e5ac14d1e37ad1d9fcd (7월 20, 2020) |
 
 ## Available Pages:
 
 
-- [Programming](Programming_98307.md) <img src="./media/images/icons/contenttypes/home_page_16.png" data-border="0" data-align="absmiddle" width="16" height="16" />
+- [Programming](Programming_98307.md) ![](./media/images/icons/contenttypes/home_page_16.png)
   - [Java](./java/Java_25001989.md)
     - [Java Basic](./java/Java-Basic_399278081.md)
       - [String](./java/String_276234241.md)
@@ -18,6 +18,7 @@
       - [클래스객체](./java/class_20260701107.md)
       - [Interface](./java/Interface_384237577.md)
       - [중첩 클래스(Nested Class)](./java/384172057.md)
+      - [주석](./java/comment_20260706171700.md)
       - [Exception](./java/Exception_384073729.md)
       - [Collections](./java/Collections_25002006.md)
         - [List Collections](./java/List-Collections_25002021.md)
@@ -50,7 +51,7 @@
       - [Entryption/Decryption](./java/41222145.md)
       - [Stream](./java/Stream_383746188.md)
       - [Optional](./java/Optional_383942657.md)
-      
+
     - [Effective Java](./java/Effective-Java_371163137.md)
       - [객체의 생성과 삭제](./java/382238721.md)
       - [모든 객체의 공통 메서드](./java/382205966.md)
@@ -63,41 +64,41 @@
       - [병행성](./java/382369833.md)
       - [직렬화](./java/382206002.md)
       - [3판](./java/382304414.md)
-      
+
     - [Java Tech & Advanced](98462.md)
       - [ThreadLocal](ThreadLocal_25002461.md)
       - [Server-Sent-Event(SSE)](398917633.md)
       - [JVM](JVM_399048707.md)
-      
-    - [알고리즘](32959.md)
-      - [문제 풀이](28868609.md)
-        - [Hash](Hash_28835872.md)
-        - [Stack/Queue](28835890.md)
-        - [Heap 문제](28835911.md)
-        - [정렬](28835946.md)
-        - [완전탐색](28835963.md)
-        - [탐욕법(Greedy)](28835980.md)
-        - [동적 프로그래밍(Dynamic Programming)](28868656.md)
-        - [깊이/너비 우선탐색(DFS/BFS)](28901387.md)
-        - [이분탐색](28836107.md)
-        - [그래프](28836135.md)
-      - [알고리즘 정리](30474270.md)
-        - [기본 알고리즘](30474287.md)
-        - [자료구조](30539794.md)
-        - [검색](30605313.md)
-        - [스택과 큐](30539821.md)
-        - [재귀 알고리즘](40698412.md)
-        - [정렬 알고리즘](40698429.md)
-        - [집합](40698446.md)
-        - [문자열 검색](40698463.md)
-        - [리스트](40665268.md)
-        - [트리(Tree)](40698480.md)
-        - [헤시(Hash)](40698497.md)
-        - [Heap](Heap_352190482.md)
+
+    - [알고리즘](./algorithm/32959.md)
+      - [문제 풀이](./algorithm/28868609.md)
+        - [Hash](./algorithm/Hash_28835872.md)
+        - [Stack/Queue](./algorithm/28835890.md)
+        - [Heap 문제](./algorithm/28835911.md)
+        - [정렬](./algorithm/28835946.md)
+        - [완전탐색](./algorithm/28835963.md)
+        - [탐욕법(Greedy)](./algorithm/28835980.md)
+        - [동적 프로그래밍(Dynamic Programming)](./algorithm/28868656.md)
+        - [깊이/너비 우선탐색(DFS/BFS)](./algorithm/28901387.md)
+        - [이분탐색](./algorithm/28836107.md)
+        - [그래프](./algorithm/28836135.md)
+      - [알고리즘 정리](./algorithm/30474270.md)
+        - [기본 알고리즘](./algorithm/30474287.md)
+        - [자료구조](./algorithm/30539794.md)
+        - [검색](./algorithm/30605313.md)
+        - [스택과 큐](./algorithm/30539821.md)
+        - [재귀 알고리즘](./algorithm/40698412.md)
+        - [정렬 알고리즘](./algorithm/40698429.md)
+        - [집합](./algorithm/40698446.md)
+        - [문자열 검색](./algorithm/40698463.md)
+        - [리스트](./algorithm/40665268.md)
+        - [트리(Tree)](./algorithm/40698480.md)
+        - [헤시(Hash)](./algorithm/40698497.md)
+        - [Heap](./algorithm/Heap_352190482.md)
       - [참고 강의](234160129.md)
       - [SW역량 테스트](234258457.md)
       - [COS PRO](COS-PRO_352157697.md)
-  
+
     - [Java Pattern](Java-Pattern_25002575.md)
       - [Observable](Observable_25002592.md)
       - [Strategy Pattern](Strategy-Pattern_385777665.md)
@@ -156,13 +157,14 @@
         - [Spring Boot Quick Start 정리 - 1](./spring/403669080.md)
         - [Spring Boot Quick Start - 테스트](./spring/409501709.md)
         - [Spring Boot Quick Start - logging](./spring/Spring-Boot-Quick-Start---logging_409534504.md)
+        - [Spring Boot Quick Start - jar 패키징](./spring/Spring-Boot-QS-jar_202660707162700.md)
 
       - [Spring Boot Profiles](./spring/Spring-Boot-Profiles_387907700.md)
-      
+
 	  - [Spring Boot REST](./spring/Spring-Boot-REST_387351007.md)
-      
+
 	  - [Spring Boot Reactive Proframming](./spring/Spring-Boot-Reactive-Proframming_387481744.md)
-      
+
 	  - [Spring Boot Project Interfration with Apache Kafka](./spring/Spring-Boot-Project-Interfration-with-Apache-Kafka_387907812.md)
 
 	  - [Spring Boot AOP](./spring/Spring-Boot-AOP_388956284.md)
@@ -176,7 +178,7 @@
         - [4. Method Level 인증](./spring/394133555.md)
         - [5. HTTPS 사용](./spring/394166332.md)
         - [6. JWT(Json Web Token) 인증WT](./spring/394264688.md)
-      
+
 		- [Java Configuration](./spring/Java-Configuration_414220322.md)
 
       - [Spring Boot Session](./spring/Spring-Boot-Session_393248769.md)
@@ -216,6 +218,7 @@
 		- [javascript 추세](./web/390758544.md)
 		- [기본문법](./web/366379068.md)
 	- [CSS](./web/CSS_352387114.md)
+	- [HTML](./web/html_202606251839.md)
 	- [JSP](./web/JSP_372146177.md)
 
 - [Node.js](./nodejs/Node.js_374734849.md)
@@ -296,7 +299,7 @@
     - [기초1](383746178.md)
     - [기초2](383713446.md)
     - [기초3](383811783.md)
-    
+
 - 코딩 사업을 위한 base
 	- [Frontend](Frontend_202606171647.md)
 	- [Backend](Backend_202606171650.md)

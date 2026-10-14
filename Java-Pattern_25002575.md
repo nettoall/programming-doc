@@ -1,9 +1,8 @@
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Java](Java_25001989.md)
 
-#  Java Pattern
+# Java Pattern
 
 Created by Dongwook Han, last modified on 6월 23, 2023
 

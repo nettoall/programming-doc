@@ -1,4 +1,3 @@
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Web](Web_352452663.md)
@@ -10,7 +9,8 @@
 - 형식 : function 함수명(인자…) { 코드; return 반환값; }
 
 - 익명함수로 정의도 가능
-	``` javascript
+```kotlin
+javascript
 	var numbering = funcation() {
     i = 0;
     while(i < 10) {
@@ -19,23 +19,21 @@
     }
   }
   numbering();
-	```
+```
 
 ## 화살표 함수
 
 - function 대시 => 사용
-	``` javascript
+```javascript
+javascript
 	const add = (a,b) => {
 	  return a + b;
 	}
-	```
+```
 
 ## 함수 줄이기
 - 예제
-	``` javascript
+```javascript
+javascript
 	const add = (a, b) => a+b;
-	```
-
-
-
-
+```

@@ -1,31 +1,11 @@
-<div id="page">
-
-<div id="main" class="aui-page-panel">
-
-<div id="main-header">
-
-<div id="breadcrumb-section">
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Spring](Spring_120848385.md)
 4.  [Spring Boot](Spring-Boot_223477765.md)
 
-</div>
+# Programming : Spring Boot Actuator
 
-# <span id="title-text"> Programming : Spring Boot Actuator </span>
-
-</div>
-
-<div id="content" class="view">
-
-<div class="page-metadata">
-
-Created by <span class="author"> Dongwook Han</span> on 6월 23, 2023
-
-</div>
-
-<div id="main-content" class="wiki-content group">
+Created by Dongwook Han on 6월 23, 2023
 
 # 정의
 
@@ -44,39 +24,23 @@ Created by <span class="author"> Dongwook Han</span> on 6월 23, 2023
 - Actuator : 무언가를 움직이거나 제어하기 위한 기계적인 장치를 지칭
 
 - Maven
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```xml
+xml
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
   </dependencies>
-  ```
-
-  </div>
-
-  </div>
+```
 
 - Gradle
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```css
+css
   dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 # Endpoints
 
@@ -96,117 +60,41 @@ Created by <span class="author"> Dongwook Han</span> on 6월 23, 2023
 
 - 지원하는 endpoints
 
-<div class="table-wrap">
 
-<table class="confluenceTable" data-layout="default" data-local-id="44aa364d-cda2-4474-b848-265bcbd20915">
-<tbody>
-<tr>
-<th class="confluenceTh"><p><strong>ID</strong></p></th>
-<th class="confluenceTh"><p><strong>Description</strong></p></th>
-</tr>
-&#10;<tr>
-<td class="confluenceTd"><p>auditevents</p></td>
-<td class="confluenceTd"><p>현재 application 에 대한 감사(audit) 이벤트들의 정보 노출</p>
-<p>AuditEventRepository bean이 있어야 함</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>beans</p></td>
-<td class="confluenceTd"><p>application에 있는 전체 Spring bean 표시</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>caches</p></td>
-<td class="confluenceTd"><p>사용가능한 cache 노출</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>conditions</p></td>
-<td class="confluenceTd"><p>설정과 자동 설정 클래스에서 평가한 조건들과 함께, 그 조건이 매칭되거나 매칭되지 않은 이유를 노출</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>configprops</p></td>
-<td class="confluenceTd"><p>모든 @ConfigurationProperteis 에 있는 정보들을 표시</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>env</p></td>
-<td class="confluenceTd"><p>Spring의 ConfigurableEnvironment에 있는 property를 표시</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>flyway</p></td>
-<td class="confluenceTd"><p>적용시킨 모든 Flyway 데이터베이스 마이그레이션들을 표시. Flyway Bean이 하나 이상 필요</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>health</p></td>
-<td class="confluenceTd"><p>application 상태 정보 표시</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>httptrace</p></td>
-<td class="confluenceTd"><p>HTTP trace 정보 표시(기본적으로 HTTP request-response exchange를 마지막 100개까지 표시). HttpTraceRepository Bean이 필요</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>info</p></td>
-<td class="confluenceTd"><p>application 정보를 보여주며 application 정보는 임의로 추가</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>integrationgraph</p></td>
-<td class="confluenceTd"><p>Spring Integration graph를 표시. Spring-integration-core dependency가 필요</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>loggers</p></td>
-<td class="confluenceTd"><p>application logger 설정을 조회하고 변경</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>liquibase</p></td>
-<td class="confluenceTd"><p>적용시킨 모든 Liquibase 데이터베이스 마이그레이션을 표시 Liquibase Bean이 하나 이상 필요</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>metrics</p></td>
-<td class="confluenceTd"><p>현재 application 의 metric 정보 표시</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>mappings</p></td>
-<td class="confluenceTd"><p>모든 @RequestMapping path 정보 표시</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>quartz</p></td>
-<td class="confluenceTd"><p>Quartz 스케줄러 Job 들에 대한 정보 표시</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>scheduledtasks</p></td>
-<td class="confluenceTd"><p>application에 스케줄링된 task 표시</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>sessions</p></td>
-<td class="confluenceTd"><p>Spring session 기반 세션 저장소에서 사용자 세션을 검색하고 삭제 가능. Spring Session을 사용하는 Servlet Web Application 이 필요</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>shutdown</p></td>
-<td class="confluenceTd"><p>application을 gracefule하게 종료. 기본적으로 비활성화됨</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>startup</p></td>
-<td class="confluenceTd"><p>ApplicationStartup으로 수집한 startup 단계 데이터를 표시. SpringApplicatin에 BufferApplicationStartup를 설정 필요</p></td>
-</tr>
-<tr>
-<td class="confluenceTd"><p>threaddump</p></td>
-<td class="confluenceTd"><p>thread dump를 수행</p></td>
-</tr>
-</tbody>
-</table>
+| ID | Description |
+| --- | --- |
+| auditevents | 현재 application 에 대한 감사(audit) 이벤트들의 정보 노출AuditEventRepository bean이 있어야 함 |
+| beans | application에 있는 전체 Spring bean 표시 |
+| caches | 사용가능한 cache 노출 |
+| conditions | 설정과 자동 설정 클래스에서 평가한 조건들과 함께, 그 조건이 매칭되거나 매칭되지 않은 이유를 노출 |
+| configprops | 모든 @ConfigurationProperteis 에 있는 정보들을 표시 |
+| env | Spring의 ConfigurableEnvironment에 있는 property를 표시 |
+| flyway | 적용시킨 모든 Flyway 데이터베이스 마이그레이션들을 표시. Flyway Bean이 하나 이상 필요 |
+| health | application 상태 정보 표시 |
+| httptrace | HTTP trace 정보 표시(기본적으로 HTTP request-response exchange를 마지막 100개까지 표시). HttpTraceRepository Bean이 필요 |
+| info | application 정보를 보여주며 application 정보는 임의로 추가 |
+| integrationgraph | Spring Integration graph를 표시. Spring-integration-core dependency가 필요 |
+| loggers | application logger 설정을 조회하고 변경 |
+| liquibase | 적용시킨 모든 Liquibase 데이터베이스 마이그레이션을 표시 Liquibase Bean이 하나 이상 필요 |
+| metrics | 현재 application 의 metric 정보 표시 |
+| mappings | 모든 @RequestMapping path 정보 표시 |
+| quartz | Quartz 스케줄러 Job 들에 대한 정보 표시 |
+| scheduledtasks | application에 스케줄링된 task 표시 |
+| sessions | Spring session 기반 세션 저장소에서 사용자 세션을 검색하고 삭제 가능. Spring Session을 사용하는 Servlet Web Application 이 필요 |
+| shutdown | application을 gracefule하게 종료. 기본적으로 비활성화됨 |
+| startup | ApplicationStartup으로 수집한 startup 단계 데이터를 표시. SpringApplicatin에 BufferApplicationStartup를 설정 필요 |
+| threaddump | thread dump를 수행 |
 
-</div>
 
 - Web Application(Spring MVC, Spring Webflux, Jersey) 에서 이용가능한 Endpoints
-
-<div class="table-wrap">
 
 |  |  |
 |----|----|
 | **ID** | **Description** |
 | heapdump | hprof 힙 덤프 파일 반환. HotSpot JVM 필요 |
 | jolokia | HTTP를 통해 JMX 빈을 노출(클래스 패스에 Jolokia 가 있을 때 Webflux에선 사용할 수 없음) jolokia-core dependency 필요 |
-| logfile | 로그 파일에 있는 내용들을 반환(<a href="http://loggin.file.name" class="external-link" rel="nofollow">loggin.file.name</a> 이나 logging.file.path 프로퍼티 설정시만) HTTP Range 헤더를 사용해서 로그 파일에 있는 내용 일분만 조회할 수도 있음 |
+| logfile | 로그 파일에 있는 내용들을 반환([loggin.file.name](http://loggin.file.name) 이나 logging.file.path 프로퍼티 설정시만) HTTP Range 헤더를 사용해서 로그 파일에 있는 내용 일분만 조회할 수도 있음 |
 | prometheus | 메트릭을 프로메테우스 서버에서 스크랩할 수 있는 포맷으로 노출. micrometer-registry-prometheus dependecy 필요 |
-
-</div>
 
 ## Endpoints 활성화
 
@@ -215,41 +103,23 @@ Created by <span class="author"> Dongwook Han</span> on 6월 23, 2023
 - 활성화할 endpoint를 설정하려면 management.endpoint.\<id\>.enabled 프로퍼티 사용
 
 - 활성화 예제(properties)
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```properties
+properties
   management.endpoint.shutdown.enabled=true
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 옵트인 방식(각 endpoint 마다 수락을 하여) 활성화시 management.endpoins-enabeld-by-default 를 false 로 설정하고 개별 endpoint 의 enabled 프로퍼티를 통해 활성화 처리
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```properties
+properties
   management.endpoints.enabled-by-default=false
   management.endpoint.info.enabled=true
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## Endpoints 노출
 
 - endpoint에 민감한 정보가 있을 수 있기에 언제 노출시킬지 신중해야 함
 
 - 각 endpoint 별로 기본 노출 정책을 정리한 테이블
-
-<div class="table-wrap">
 
 |                  |         |         |
 |------------------|---------|---------|
@@ -280,24 +150,14 @@ Created by <span class="author"> Dongwook Han</span> on 6월 23, 2023
 | logfile          | N/A     | No      |
 | prometheus       | N/A     | No      |
 
-</div>
-
 - 노출할 Endpoint를 변경하려면 properties 에 include, exclude 사용하려 설정
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```properties
+properties
   management.endpoints.jmx.exposure.exclude=
   management.endpoints.jmx.exposure.include = health, info
   management.endpoints.web.exposure.exclude=env.beans
   management.endpoints.web.exposure.include=*
-  ```
-
-  </div>
-
-  </div>
+```
 
 - exclude가 include 보다 우선순위가 높음
 
@@ -306,91 +166,59 @@ Created by <span class="author"> Dongwook Han</span> on 6월 23, 2023
 - Spring Security가 있을 때 기본적으로 Spring Security의 Content-negotiation 전략을 통해 endpoing 보호
 
 - HTTP endpoint 보안 설정을 커스텀하려면 RequestMatcher 객체를 사용하여 설정
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @Configuration(proxyBeanMethods = false)
   public class MySecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
       http.requestMatcher(EndpointRequest.toAnyEndpoint())
-          .authorizeRequests((requests) -> 
+          .authorizeRequests((requests) ->
               requests.anyRequest().hasRole("ENDPOINT_ADMIN"));
       http.httpBasic();
       return http.buile();
     }
   }
-  ```
+```
 
-  </div>
-
-  </div>
-
-  - EndpoingRequest.toAnyEndpoint() 를 사용해 모든 endpoint 에 대한 요청을 매칭하고 ENDPOINT_ADMIN 권한이 있는지 확인
+- EndpoingRequest.toAnyEndpoint() 를 사용해 모든 endpoint 에 대한 요청을 매칭하고 ENDPOINT_ADMIN 권한이 있는지 확인
 
   - EndpointRequest에 있는 다른 matcher 메소드들도 활용하여 설정 가능
 
 - endpoint에 인증없이 접근하도록 커스텀 시큐리티 설정 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @Configuration(proxyBeanMethods = false)
   public class MySecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
       http.requestMatcher(EndpointRequest.toAnyEndpoint())
-          .authorizeRequests((requests) -> 
+          .authorizeRequests((requests) ->
               requests.anyRequest().permitAll());
       return http.buile();
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## Endpoints 구성
 
 - endpoint 에선 파라미터를 받지 않는 읽기 작업에 대한 응답을 자동으로 캐시함
 
 - endpoint가 응답을 캐시하고 있을 시간을 설정하려면 cache.time-to-live 프로퍼티 사용
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```properties
+properties
   management.endpoint.beans.cache.time-to-live=10s
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## Hypermedia for Actuator Web Endpoints
 
 - 모든 endpoints의 링크를 가진 'discovery page” 추가됨
 
 - discoverty page 비활성화 설정
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```properties
+properties
   management.endpoint.web.discoverty.enabled=false
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 커스텀 management context path를 설정하면 discovery page는 자동으로 /actuator 에서 management context root 로 이동.
 
@@ -402,20 +230,12 @@ Created by <span class="author"> Dongwook Han</span> on 6월 23, 2023
 
 - CORS 지원은 기본적으로 비활성화
 
-- 예제 설정 ( <a href="http://example.com" class="external-link" rel="nofollow">example.com</a> 도메인에서 GET, POST 호출 허용)
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+- 예제 설정 ( [example.com](http://example.com) 도메인에서 GET, POST 호출 허용)
+```properties
+properties
   management.endpoint.web.cors.allowed-origins=https;//example.com
   management.endpoint.web.cors.allowed-methods=GET,POST
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 커스텀 Endpoints 구현하기
 
@@ -424,21 +244,13 @@ Created by <span class="author"> Dongwook Han</span> on 6월 23, 2023
 - HTTP를 통한 Endpoint 노출은 Jersey, Spring MVC, Spring Webflux를 통해 가능
 
 - 예제 코드
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @ReadOperation
   public CustomData getData(){
     return new CustomData("test", 5);
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - @JmxEndpoint 나 @WebEndpoint 를 사용해서 기술 전용 endpoint 작성
 
@@ -461,38 +273,22 @@ Created by <span class="author"> Dongwook Han</span> on 6월 23, 2023
 - 예제
 
   - json request body
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+```css
+json
     {
       "name":"test",
       "counter": 42
     }
-    ```
+```
 
-    </div>
-
-    </div>
-
-  - Endpoint 정의
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+- Endpoint 정의
+```java
+java
     @WriteOperation
     public void updateData(Sring name, int counter) {
       // injects "test" and 42
     }
-    ```
-
-    </div>
-
-    </div>
+```
 
 #### 입력 타입 변환
 
@@ -526,8 +322,6 @@ Created by <span class="author"> Dongwook Han</span> on 6월 23, 2023
 
 - predicate의 HTTP 메소드는 Operation 타입에 따라 결정
 
-<div class="table-wrap">
-
 |                  |                 |
 |------------------|-----------------|
 | **Operation**    | **HTTP method** |
@@ -535,24 +329,4 @@ Created by <span class="author"> Dongwook Han</span> on 6월 23, 2023
 | @WriteOperation  | POST            |
 | @DeleteOperation | DELETE          |
 
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div id="footer" role="contentinfo">
-
-<div class="section footer-body">
-
 Document generated by Confluence on 4월 05, 2026 17:57
-
-
-
-</div>
-
-</div>
-
-</div>

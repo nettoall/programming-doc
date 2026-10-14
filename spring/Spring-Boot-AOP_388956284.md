@@ -1,31 +1,11 @@
-<div id="page">
-
-<div id="main" class="aui-page-panel">
-
-<div id="main-header">
-
-<div id="breadcrumb-section">
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Spring](Spring_120848385.md)
 4.  [Spring Boot](Spring-Boot_223477765.md)
 
-</div>
+# Programming : Spring Boot AOP
 
-# <span id="title-text"> Programming : Spring Boot AOP </span>
-
-</div>
-
-<div id="content" class="view">
-
-<div class="page-metadata">
-
-Created by <span class="author"> Dongwook Han</span>, last modified on 4월 04, 2023
-
-</div>
-
-<div id="main-content" class="wiki-content group">
+Created by Dongwook Han, last modified on 4월 04, 2023
 
 # 개요
 
@@ -214,137 +194,81 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 4월 04, 
 ## @Aspect
 
 - 클래스 위에 @Aspect를 적용하여 Aspect 클래스임을 나타냄
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @Aspect
   public class InvoiceAspect{}
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## @Pointcut
 
 - Apect 클래스의 메소드 위에 적용
 
 - 비즈니스 메소드위의 {} 에 표현식 정의
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @Pointcut("execution(public void com.dev.spring.aop.service.InvoiceBusinessService.saveInvoice())")
   public void p1(){}
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## @Before
 
 - @Before annotation이 있는 메소드는 Before Advice를 나타내며 비즈니스 메소드 실행전에 실행
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @Before("p1()")
   public void beginTransaction(){
     System.out.println("Transaction Begin");
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## @After
 
 - @After annotation이 달린 메소드는 After Advice를 나타내며, 비즈니스 메소드 실행 후에 실행
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @After("p1()")
   public void completeTransaction(){
     System.out.println("Transaction complete !!");
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## @AfterReturning
 
 - After Returning Advice를 나타내며, 비즈니스 메소드가 성공적으로 실행되었을 때만 실행됨
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @AfterReturning("p1()")
   public void commitTransaction(){
     System.out.println("Transaction committed!");
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## @AfterThrowing
 
 - After Throwing Advice를 나타내며, 비즈니스 메소드가 실패하였을 때만 실행됨
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @AfterThrowing("p1()")
   public void rollbackTransaction(){
     System.out.println("Transaction rolled back!!");
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## @Around
 
 - Around Adve를 나타내며 두 부분으로 실행됨
 
 - 비즈니스 실행 전에 실행 및 비즈니스 실행 후에 실행됨
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @Around("p1()")
   public void testAroundAdvice(ProceedingJoinPoint pj) throws Throwable {
     System.out.println("executing Before part of business method");
     pj.proceed(); // the code will call business method
     System.out.println("Executing After part of business method");
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 # Pointcut 표현식 예제
 
@@ -353,20 +277,16 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 4월 04, 
 - 다양한 조합을 구성하여 사용
 
 - Pointcut 표현식 구문 예는 ReturnType Packege.ClassName,MethodName(ParameterTypes)
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   () // 파라미터가 없는 경우
   (..) //  모든 수, 또는 유형의 매개변수
 
-  public Integer com.dev.dao.InvoiceDao.saveInvoice(Invoice) 
-  => InvoiceDao 클래스 안의 Invoce 유형의 파라미터를 가진 saveInvoice() 메소드 
+  public Integer com.dev.dao.InvoiceDao.saveInvoice(Invoice)
+  => InvoiceDao 클래스 안의 Invoce 유형의 파라미터를 가진 saveInvoice() 메소드
 
   public Integer com.dev.dao.InvoiceDao.saveInvoice()
-  ==> InvoiceDao 클래스 안의 파라미터가 없는 saveIvoice() 메소드 
+  ==> InvoiceDao 클래스 안의 파라미터가 없는 saveIvoice() 메소드
 
   public Integer com.dev.dao.InvoiceDao.*()
   ==> InoiceDao 클래스 안의 Integer를 반환하는 모든 메소드
@@ -379,11 +299,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 4월 04, 
 
   public * com.dev.dao.*.*(..)
   ==> com.dev.dao 패키지 안에 있는 모든 클래스의 모든 메소드
-  ```
-
-  </div>
-
-  </div>
+```
 
 # pointcut 표현식을 복습하기 위한 연습
 
@@ -414,12 +330,8 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 4월 04, 
 ## 단계2. SpringBootApplication 에 @EnableAspectJAutoProxy 정의
 
 - Spring Boot main 클래스에 @EnableAspectJAutoProxy 정의(SpringBoot2AopApplication.java)
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.spring.aop;
 
   import org.springframework.boot.SpringApplication;
@@ -434,23 +346,15 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 4월 04, 
           SpringApplication.run(SpringBoot2AopApplication.class, args);
       }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계3. 비즈니스 서비스 클래스 구현
 
 - InvoiceBusiness 클래스 구현. (InvoiceBusinessService.java)
 
 - 클래스의 메소드는 advice 정의(InvoiceBusinessService.java)
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.spring.aop.service;
 
   import java.util.Random;
@@ -467,31 +371,23 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 4월 04, 
               throw new RuntimeException("Exception occured");
           }
       }
-      
+
       public String helloInvoice() {
           return "FROM helloInvoice()";
       }
-      
+
       public void testMethodforAroundAdvice() {
           System.out.println("Business Method is getting Executed !");
       }
-      
+
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계4. 비즈니스 메소더를 호출 및 실행할 runner 클래스 생성
 
 - advice가 어떻게 작동되는지 테스트하기 위해 비즈니스 메소드를 호출하는 runner 클래스 생성(InvoiceRunner.java)
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.spring.aop;
 
   import org.springframework.beans.factory.annotation.Autowired;
@@ -505,32 +401,24 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 4월 04, 
 
       @Autowired
       private InvoiceBusinessService service;
-      
+
       @Override
       public void run(String... args) throws Exception {
-          
+
           service.helloInvoice();
           service.testMethodforAroundAdvice();
           service.saveInvoice();
-          
+
       }
 
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계5. Aspect 클래스와 메소드 구현
 
 - InvoiceAspect.java 클래스 및 메소드 구현(InvoiceAspect.java)
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.spring.aop.aspect;
 
   import org.aspectj.lang.ProceedingJoinPoint;
@@ -546,69 +434,65 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 4월 04, 
   @Aspect
   @Component
   public class InvoiceAspect {
-      
+
       @Pointcut("execution(public void com.dev.spring.aop.service.InvoiceBusinessService.saveInvoice())")
       public void p1() {
-          
+
       }
-      
+
       @Pointcut("execution(public String com.dev.spring.aop.service.InvoiceBusinessService.helloInvoice())")
       public void p2() {
-          
+
       }
-      
-      
+
+
       @Pointcut("execution(* com.dev.spring.aop.service.InvoiceBusinessService.testMethodforAroundAdvice())")
       public void p4() {
-          
+
       }
 
       @Before("p1()")
       public void beginTransaction() {
           System.out.println("Transaction begins !");
       }
-      
+
       @After("p1()")
       public void completeTransaction() {
           System.out.println("Transaction completes !");
       }
-      
+
       @AfterReturning("p1()")
       public void commitTransaction() {
           System.out.println("Transaction committed !");
       }
-      
+
       @AfterThrowing("p1()")
       public void rollbackTransaction() {
           System.out.println("Transaction rolled back !");
       }
-      
+
       @AfterReturning(value="p2()", returning = "obj")
       public void getAdviceReturnValue(Object obj) {
           System.out.println("Returning Value is : "+obj);
       }
-      
+
       @AfterThrowing(value="p1()", throwing = "th")
       public void rollbackTransactionGetMessage(Throwable th) {
           System.out.println("Transaction rolled back ! Message from method : "+th);
       }
-      
-      
+
+
       @Around("p4()")
       public void testAroundAdvice(ProceedingJoinPoint pj) throws Throwable {
-          
+
           System.out.println("Executing Before part of business method");
-          
+
           pj.proceed();  // this code will call business method
-          
+
           System.out.println("Executing After part of business method");
       }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계6. AOP Concepts 테스팅
 
@@ -629,12 +513,8 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 4월 04, 
 ## 단계1. annotation 정의
 
 - TestAnnotation.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.spring.aop.annotation;
 
   import java.lang.annotation.ElementType;
@@ -647,104 +527,58 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 4월 04, 
   public @interface TestAnnotation {
 
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계2. annotation을 정의한 비즈니스 메소드 구현
 
 - testMethodWithAnnotation()
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @TestAnnotation
   public void testMethodWithAnnotation() {
       System.out.println("FROM testMethodWithAnnotation()");
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계3. pointcut과 advice 구현
 
 - Pointcut & Advice
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @Pointcut("@annotation(com.dev.spring.aop.annotation.TestAnnotation)")
   public void p3() {
-          
+
   }
 
   @Before("p3()")
   public void testAnnotatedMethod() {
       System.out.println(" From testAnnotatedMethod()");
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계4. Runner 클래스 정의
 
 - InvoiceRunner.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @Component
   public class InvoiceRunner implements CommandLineRunner {
 
       @Autowired
       private InvoiceBusinessService service;
-      
+
       @Override
       public void run(String... args) throws Exception {
-          
+
           service.testMethodWithAnnotation();
-          
+
       }
 
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ## 단계5. Annotated method에 Advice 테스팅
 
 - Spring Boot Applicatoin 실행
 
-</div>
-
-</div>
-
-</div>
-
-<div id="footer" role="contentinfo">
-
-<div class="section footer-body">
-
 Document generated by Confluence on 4월 05, 2026 17:57
-
-
-
-</div>
-
-</div>
-
-</div>

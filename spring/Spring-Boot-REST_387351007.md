@@ -1,31 +1,11 @@
-<div id="page">
-
-<div id="main" class="aui-page-panel">
-
-<div id="main-header">
-
-<div id="breadcrumb-section">
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Spring](Spring_120848385.md)
 4.  [Spring Boot](Spring-Boot_223477765.md)
 
-</div>
+# Programming : Spring Boot REST
 
-# <span id="title-text"> Programming : Spring Boot REST </span>
-
-</div>
-
-<div id="content" class="view">
-
-<div class="page-metadata">
-
-Created by <span class="author"> Dongwook Han</span>, last modified on 5월 07, 2023
-
-</div>
-
-<div id="main-content" class="wiki-content group">
+Created by Dongwook Han, last modified on 5월 07, 2023
 
 - webservices를 통합 레이어로 사용하지 않고 엔터프라이즈 애플리케이션을 개발할 수 없다고 해도 과언이 아님
 
@@ -126,12 +106,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 5월 07, 
 - query : CREATE DATABASE REST_INVOICE
 
 ### application.properties 수정
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```properties
 #  DB Connection Properties
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.datasource.url=jdbc:mysql://localhost:3306/REST_INVOICE
@@ -144,19 +119,9 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 ```
 
-</div>
-
-</div>
-
-### 샘플 코드 구현
-
-- Invoice.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+### 샘플 코드 구현- Invoice.java
+```java
+java
   package com.dev.invoice.rest.entity;
 
   import javax.persistence.Entity;
@@ -172,7 +137,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
   @AllArgsConstructor
   @Entity
   public class Invoice {
-      
+
       @Id
       @GeneratedValue
       private Long id;
@@ -185,19 +150,10 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
       private String vendor;
       private String comments;
   }
-  ```
-
-  </div>
-
-  </div>
-
-  InvoiceRepository.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```
+InvoiceRepository.java
+```java
+java
   package com.dev.invoice.rest.repo;
 
   import org.springframework.data.jpa.repository.JpaRepository;
@@ -207,25 +163,17 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
   import com.dev.invoice.rest.entity.Invoice;
 
   public interface InvoiceRepository extends JpaRepository<Invoice, Long>{
-      
+
       // Update is Non-Select Operation, so @Modifying is used
       @Modifying
       @Query("UPDATE Invoice SET number=:number WHERE id=:id")
       Integer updateInvoiceNumberById(String number,Long id);
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - InvoiceService.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.invoice.rest.service;
 
   import java.util.List;
@@ -233,57 +181,49 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
   import com.dev.invoice.rest.entity.Invoice;
 
   public interface IInvoiceService {
-      
+
       /**
        * Takes Invoice Object as input and returns PK generated
        */
       Long saveInvoice(Invoice inv);
-      
+
       /**
        * Takes existing Invoice data as input and updates values
        */
       void updateInvoice(Invoice e);
-      
+
       /**
        * Takes PK(ID) as input and deletes Invoice Object data
        */
-      void deleteInvoice(Long id);    
-      
+      void deleteInvoice(Long id);
+
       /**
        * Takes id as input and returns one row as one object
        */
       Invoice getOneInvoice(Long id);  //used in RestController
-      
+
       /**
        * select all rows and provides result as a List<Invoice>
        */
       List<Invoice> getAllInvoices();
-      
+
       /**
        * Takes Id as input,checks if record exists returns true, else false
-       * 
+       *
        */
       boolean isInvoiceExist(Long id);
-      
+
       /**
        * Takes 2 fields as input, updates Invoice data as provided where clause
        * like 'UPDATE Invoice SET number=:number WHERE id=:id'
        */
       Integer updateInvoiceNumberById(String number,Long id);
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - InvoiceServiceImpl.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.invoice.rest.service.impl;
 
   import java.util.List;
@@ -299,15 +239,15 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
   import com.dev.invoice.rest.service.</yoastmark>IInvoiceService;
   import com.dev.invoice.rest.util.InvoiceUtil;
 
-  @Service 
+  @Service
   public class InvoiceServiceImpl implements IInvoiceService {
-      
+
       @Autowired
-      private InvoiceRepository repo;  
-      
+      private InvoiceRepository repo;
+
       @Autowired
       private InvoiceUtil util;
-      
+
       @Override
       public Long saveInvoice(Invoice inv) {
           util.CalculateFinalAmountIncludingGST(inv);
@@ -326,7 +266,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
           Invoice inv= getOneInvoice(id);
           repo.delete(inv);
       }
-      
+
       public Optional<Invoice> getSingleInvoice(Long Id) {
           return repo.findById(Id);
       }
@@ -353,19 +293,19 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
                   //list.sort((ob1,ob2)->ob2.getAmount().compareTo(ob1.getAmount())); // DESC
           return list;
       }
-      
+
       @Override
       public boolean isInvoiceExist(Long id) {
-          
+
           return repo.existsById(id);
       }
-      
+
       @Override
       @Transactional
       public Integer updateInvoiceNumberById(
-              String number, Long id) 
+              String number, Long id)
       {
-          if(!repo.existsById(id)) { 
+          if(!repo.existsById(id)) {
               throw new InvoiceNotFoundException(
                       new StringBuffer()
                       .append("Invoice '")
@@ -375,21 +315,13 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
           }
           return repo.updateInvoiceNumberById(number, id);
       }
-      
+
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - ErrorType.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.invoice.rest.entity;
 
   import lombok.AllArgsConstructor;
@@ -404,21 +336,13 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
       private String time;
       private String status;
       private String message;
-      
+
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - InvoiceNotFoundException.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.invoice.rest.exception;
 
   //Custom Exception
@@ -429,25 +353,17 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
       public InvoiceNotFoundException() {
           super();
       }
-      
+
       public InvoiceNotFoundException(String message) {
           super(message);
       }
-      
+
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - InvoiceErrorHandler.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.invoice.rest.exception.handler;
 
   import java.util.Date;
@@ -474,28 +390,20 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
       //@ResponseBody
       @ExceptionHandler(InvoiceNotFoundException.class)
       public ResponseEntity<ErrorType> handleNotFound(InvoiceNotFoundException nfe){
-          
+
           return new ResponseEntity<ErrorType>(
                   new ErrorType(
-                          new Date(System.currentTimeMillis()).toString(), 
-                          "404- NOT FOUND", 
-                          nfe.getMessage()), 
+                          new Date(System.currentTimeMillis()).toString(),
+                          "404- NOT FOUND",
+                          nfe.getMessage()),
                   HttpStatus.</yoastmark>NOT_FOUND);
       }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - InvoiceUtil.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.invoice.rest.util;
 
   import org.springframework.stereotype.Component;
@@ -504,7 +412,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 
   @Component
   public class InvoiceUtil {
-      
+
       public Invoice  CalculateFinalAmountIncludingGST (Invoice inv) {
           var amount=inv.getAmount();
           var gst= 0.1;
@@ -512,51 +420,43 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
           inv.setFinalAmount(finalAmount);
           return inv;
       }
-      
+
       public void copyNonNullValues(Invoice req, Invoice db) {
-          
+
           if(req.getName() !=null) {
               db.setName(req.getName());
           }
-          
+
           if(req.getAmount() !=null) {
               db.setAmount(req.getAmount());
           }
-          
+
           if(req.getNumber() !=null) {
               db.setNumber(req.getNumber());
           }
-          
+
           if(req.getReceivedDate() !=null) {
               db.setReceivedDate(req.getReceivedDate());
           }
-          
+
           if(req.getType() !=null) {
               db.setType(req.getType());
           }
-          
+
           if(req.getVendor() !=null) {
               db.setVendor(req.getVendor());
           }
-          
+
           if(req.getComments() !=null) {
               db.setComments(req.getComments());
           }
       }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - InvoiceRestController.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.invoice.rest.controller;
 
   import java.util.List;
@@ -584,13 +484,13 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
   @RequestMapping("/api")
   // @CrossOrigin(origins = "http://localhost:4200") //Required in case of Angular Client
   public class InvoiceRestController {
-      
+
       @Autowired
-      private IInvoiceService service;  
-      
+      private IInvoiceService service;
+
       @Autowired
       private InvoiceUtil util;
-      
+
       /**
        * Takes Invoice Object as input and returns save Status as ResponseEntity<String>
        */
@@ -604,12 +504,12 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
           } catch (Exception e) {
               e.printStackTrace();
               resp = new ResponseEntity<String>(
-                      "Unable to save Invoice", 
+                      "Unable to save Invoice",
                       HttpStatus.INTERNAL_SERVER_ERROR); //500-Internal Server Error
           }
           return resp;
       }
-      
+
       /**
        * To retrieve all Invoices, returns data retrieval Status as ResponseEntity<?>
        */
@@ -622,12 +522,12 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
           } catch (Exception e) {
               e.printStackTrace();
               resp = new ResponseEntity<String>(
-                      "Unable to get Invoice", 
+                      "Unable to get Invoice",
                       HttpStatus.INTERNAL_SERVER_ERROR);
           }
           return resp;
       }
-      
+
       /**
        * To retrieve one Invoice by providing id, returns Invoice object & Status as ResponseEntity<?>
        */
@@ -638,28 +538,28 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
               Invoice inv= service.getOneInvoice(id);
               resp= new ResponseEntity<Invoice>(inv,HttpStatus.OK);
           }catch (InvoiceNotFoundException nfe) {
-              throw nfe; 
+              throw nfe;
           }catch (Exception e) {
               e.printStackTrace();
               resp = new ResponseEntity<String>(
-                      "Unable to find Invoice", 
+                      "Unable to find Invoice",
                       HttpStatus.INTERNAL_SERVER_ERROR);
           }
           return resp;
       }
-      
+
       /**
        * To delete one Invoice by providing id, returns Status as ResponseEntity<String>
        */
       @DeleteMapping("/invoices/{id}")
       public ResponseEntity<String> deleteInvoice(@PathVariable Long id){
-          
+
           ResponseEntity<String> resp= null;
           try {
               service.deleteInvoice(id);
               resp= new ResponseEntity<String> (
                       "Invoice '"+id+"' deleted",HttpStatus.OK);
-              
+
           } catch (InvoiceNotFoundException nfe) {
               throw nfe;
           } catch (Exception e) {
@@ -667,16 +567,16 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
               resp= new ResponseEntity<String>(
                       "Unable to delete Invoice", HttpStatus.INTERNAL_SERVER_ERROR);
           }
-          
+
           return resp;
       }
-      
+
       /**
        * To modify one Invoice by providing id, updates Invoice object & returns Status as ResponseEntity<String>
        */
       @PutMapping("/invoices/{id}")
       public ResponseEntity<String> updateInvoice(@PathVariable Long id, @RequestBody Invoice invoice){
-          
+
           ResponseEntity<String> resp = null;
           try {
               //db Object
@@ -688,18 +588,18 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
               resp = new ResponseEntity<String>(
                       //"Invoice '"+id+"' Updated",
                       HttpStatus.RESET_CONTENT); //205- Reset-Content(PUT)
-              
+
           } catch (InvoiceNotFoundException nfe) {
               throw nfe; // re-throw exception to handler
           } catch (Exception e) {
               e.printStackTrace();
               resp = new ResponseEntity<String>(
-                      "Unable to Update Invoice", 
+                      "Unable to Update Invoice",
                       HttpStatus.INTERNAL_SERVER_ERROR); //500-ISE
           }
           return resp;
       }
-      
+
       /**
        * To update one Invoice just like where clause condition, updates Invoice object & returns Status as ResponseEntity<String>
        */
@@ -707,7 +607,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
       public ResponseEntity<String> updateInvoiceNumberById(
               @PathVariable Long id,
               @PathVariable String number
-              ) 
+              )
       {
           ResponseEntity<String> resp = null;
           try {
@@ -715,23 +615,19 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
               resp = new ResponseEntity<String>(
                       "Invoice '"+number+"' Updated",
                       HttpStatus.PARTIAL_CONTENT); //206- Reset-Content(PUT)
-              
+
           } catch(InvoiceNotFoundException pne) {
               throw pne; // re-throw exception to handler
           } catch (Exception e) {
               e.printStackTrace();
               resp = new ResponseEntity<String>(
-                      "Unable to Update Invoice", 
+                      "Unable to Update Invoice",
                       HttpStatus.INTERNAL_SERVER_ERROR); //500-ISE
           }
           return resp;
       }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ### 애플리케이션 실행
 
@@ -741,19 +637,15 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 
 - REST 애플리케이션을 테스트하는 방법에는 여러가지가 있으며 그 중에 POSTMAN을 사용하여 테스트
 
-- POSTMAN 프로그램 다운 <a href="https://www.postman.com/downloads/" class="external-link" data-card-appearance="inline" rel="nofollow">https://www.postman.com/downloads/</a>
+- POSTMAN 프로그램 다운 [https://www.postman.com/downloads/](https://www.postman.com/downloads/)
 
 #### testing saveInvoice() method
 
 - service url : http://localhost:8080/api/invoices
 
 - Postman 프로그램에서 method 는 POST 선택, URL에 service url 입력 후, BODY를 선택한 후 ‘Raw’ 클릭하고 JSON 선택
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```css
+json
   {
   "name":"Inv1",
   "amout";135.0,
@@ -763,11 +655,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
   "vendor":"wed2",
   "comments":"on Hold"
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 #### testing getAllInvoices() method
 
@@ -799,7 +687,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 
 #### Testing deleteInvoice() method
 
-- url : <a href="http://localhost:8080/api/invoices/%7Bid%7D" class="external-link" rel="nofollow">http://localhost:8080/api/invoices/{id}</a>
+- url : [http://localhost:8080/api/invoices/{id}](http://localhost:8080/api/invoices/%7Bid%7D)
 
 - method : DELETE
 
@@ -809,7 +697,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 
 #### Testing updateInvoiceNumberById() method
 
-- url : <a href="http://localhost:8080/api/invoices/%7Bid%7D/%7Bnumber%7D" class="external-link" rel="nofollow">http://localhost:8080/api/invoices/{id}/{number}</a>
+- url : [http://localhost:8080/api/invoices/{id}/{number}](http://localhost:8080/api/invoices/%7Bid%7D/%7Bnumber%7D)
 
 - method : PATH
 
@@ -829,7 +717,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 
 - Spring Data REST는 HATEOAS의 도움만으로만 REST 작업에 액세스할 수 있는 hyperlink 제공
 
-- Resource의 일부 세부 정보가 요청되면 리스소의 세부정보 + 관련 리소스의 세부정보 + 리소스에서 수행할 수 있는 가능한 작업 제공(<u>HATEOAS 가 요청받은 것에 대해 세부정보,관련 정보, 가능한 작업 제공을 한 다는 뜻?</u>) : HATEOAS는 이러한 유형의 세부 정보를 제공
+- Resource의 일부 세부 정보가 요청되면 리스소의 세부정보 + 관련 리소스의 세부정보 + 리소스에서 수행할 수 있는 가능한 작업 제공(HATEOAS 가 요청받은 것에 대해 세부정보,관련 정보, 가능한 작업 제공을 한 다는 뜻?) : HATEOAS는 이러한 유형의 세부 정보를 제공
 
 ## Spring Data Rest
 
@@ -866,12 +754,8 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 ### Model/Entity Class 구현
 
 - API 를 생성하기 위해 앞 장의 예제 Invoice의 entity 를 가져와 사용
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.invoice.rest.entity;
 
   import javax.persistence.Entity;
@@ -883,7 +767,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
   @Data
   @Entity
   public class Invoice {
-      
+
       @Id
       @GeneratedValue
       private Long id;
@@ -896,21 +780,13 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
       private String vendor;
       private String comments;
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ### Repository interface 구현
 
 - CrudRepository를 상속받아 InvoiceRepository를 구현
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.invoice.rest.repo;
 
   import org.springframework.data.repository.CrudRepository;
@@ -918,21 +794,12 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
   import com.dev.invoice.rest.entity.Invoice;
 
   public interface InvoiceRepository extends CrudRepository<Invoice, Long> {
-      
+
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 ### application.properties 수정
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```properties
 #  DB Connection Properties
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.datasource.url=jdbc:mysql://localhost:3306/REST_INVOICE
@@ -945,21 +812,8 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 ```
 
-</div>
-
-</div>
-
-- RestController 생성 없이 Entity class와 Repository interface 만 생성하면 알아서 REST API 생성함
-
-### Spring Data REST를 사용하는 REST API 테스팅
-
-#### Browser 로 url (<a href="http://localhost:8080/" class="external-link" rel="nofollow">http://localhost:8080/</a>) 접속
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+- RestController 생성 없이 Entity class와 Repository interface 만 생성하면 알아서 REST API 생성함### Spring Data REST를 사용하는 REST API 테스팅#### Browser 로 url ([http://localhost:8080/](http://localhost:8080/)) 접속
+```yaml
 {
      _links: {
          invoices: {
@@ -972,15 +826,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
  }
 ```
 
-</div>
-
-</div>
-
-- 위의 출력은 REST API 에 대한 URL 이 '<a href="http://localhost:8080/invoices" class="external-link" rel="nofollow">http://localhost:8080/invoices</a> 임을 나타냄
-
-- 여기서 주목할 점은 http 경로에 Entity 이름(Invoice)를 가져와서 첫글짜 소문자로 변환하고 접미사 s 추가
-
-#### CRUD 명령어에 대한 URL 생성
+- 위의 출력은 REST API 에 대한 URL 이 '[http://localhost:8080/invoices](http://localhost:8080/invoices) 임을 나타냄- 여기서 주목할 점은 http 경로에 Entity 이름(Invoice)를 가져와서 첫글짜 소문자로 변환하고 접미사 s 추가#### CRUD 명령어에 대한 URL 생성
 
 - Base URL = http://localhost:8080/invoices
 
@@ -1035,20 +881,12 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 ## RestTemplate의 exchange() 메소드 사용
 
 - exchange() 메소드는 모든 HTTP 메서드(GET/POST/PUT/DELETE/…) 호출을 지원
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   exchange(String url, Httpmethod method, HttpEntity<?> requestEntity, Class<T> responseType, Object... uriVariables):ResponnseEntity<T>
-  ```
+```
 
-  </div>
-
-  </div>
-
-  - url : Producer application URL
+- url : Producer application URL
 
   - HttpMethod : enum to provide method type
 
@@ -1079,12 +917,8 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 - RestTemplate 으로 각 메소드 정의
 
 - Save Invoice
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   private void saveInv() {
     // 1. Producer application Url
     String url = "http://localhost:8080/api/invoices";
@@ -1102,68 +936,44 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
     logger.info("Status code value : {}", responsegetStatusCodeValue());
     logger.info("Status code : {}", response.getStatusCode().name());
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - get All Invoices
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   private void getAllInvoices() {
     String url = "http://localhost:8080/api/invoices";
     ResponseEntity<Invoice[]> response = restTemplate.getForEntity(url, Invoice[].class);
     // ResponseEntity<Invoice[]> response = restTemplate.exchange(url, HttpMethod.GET, null, Invoice[].class);
     Invoice[] invs = response.getBody();
     List<Invoice> list = Arrays.asList(invs);
-    
+
     logger.info("Response Body ; {}", response.getBody());
     logger.info("Status code value : {}", responsegetStatusCodeValue());
     logger.info("Status code : {}", response.getStatusCode().name());
     logger.info("Headers {} : ", response.getHeaders());
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - get One Invoice
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   private void getOneInvoices() {
     String url = "http://localhost:8080/api/invoices/{id}";
     //ResponseEntity<Invoice[]> response = restTemplate.getForEntity(url, String.class);
     ResponseEntity<Invoice[]> response = restTemplate.exchange(url, HttpMethod.GET, null, String.class, 7);
     Invoice[] invs = response.getBody();
     List<Invoice> list = Arrays.asList(invs);
-    
+
     logger.info("Response Body ; {}", response.getBody());
     logger.info("Status code value : {}", responsegetStatusCodeValue());
     logger.info("Status code : {}", response.getStatusCode().name());
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - update invoice
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   private void updateInvoice() {
           String url = "http://localhost:8080/api/invoices/{id}";
           String body = "{\"name\":\"INV13\",\"amount\":888}";
@@ -1179,19 +989,11 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
           logger.info("Status code : {}",response.getStatusCode().name());
           logger.info("Response Headers : {}", response.getHeaders());
       }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - delete Invoice
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   private void deleteInvoice() {
           String url = "http://localhost:8080/api/invoices/{id}";
       //  restTemplate.delete(url, 6);
@@ -1201,23 +1003,15 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
           logger.info("Status code : {}",response.getStatusCode().name());
           logger.info("Response Headers : {}", response.getHeaders());
       }
-  ```
-
-  </div>
-
-  </div>
+```
 
 # 전체 소스
 
 - Invoice Producer에 요청하는 전체 Consumer 코드를 구현
 
 - SpringBootRestTemplateApplication.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.springboot.rest.template;
 
   import org.springframework.boot.SpringApplication;
@@ -1231,25 +1025,17 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
       public static void main(String[] args) {
           SpringApplication.run(SpringBootRestTemplateApplication.class, args);
       }
-      
+
       @Bean
       public RestTemplate getRestTemplate() {
           return new RestTemplate();
       }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - Invoice.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.springboot.rest.template.entity;
 
   import lombok.AllArgsConstructor;
@@ -1260,7 +1046,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
   @NoArgsConstructor
   @AllArgsConstructor
   public class Invoice {
-      
+
       private Long id;
       private String name;
       private Double amount;
@@ -1270,21 +1056,13 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
       private String type;
       private String vendor;
       private String comments;
-      
+
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - RestTemplateRunner.java
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   package com.dev.springboot.rest.template.runner;
 
   import java.util.Arrays;
@@ -1308,10 +1086,10 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
   public class RestTemplateRunner implements CommandLineRunner {
 
       private Logger logger = LoggerFactory.getLogger(RestTemplateRunner.class);
-      
+
       @Autowired
       RestTemplate restTemplate;
-      
+
       @Override
       public void run(String... args) throws Exception {
           saveInv();
@@ -1320,14 +1098,14 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
   //      updateInvoice();
   //      deleteInvoice();
       }
-      
-      
+
+
       private void saveInv() {
           // 1. Producer application URL
           String url = "http://localhost:8080/api/invoices";
           // Send JSON data as Body
           String body = "{\"name\":\"INV11\", \"amount\":234.11,\"number\":\"INVOICE11\",\"receivedDate\":\"28-10-2020\",\"type\":\"Normal\",\"vendor\":\"ADHR001\",\"comments\" :\"On Hold\"}";
-          // Http Header 
+          // Http Header
           HttpHeaders headers = new HttpHeaders();
           //Set Content Type
           headers.setContentType(MediaType.APPLICATION_JSON);
@@ -1342,7 +1120,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
           logger.info("Status code : {}", response.getStatusCode().name());
 
       }
-      
+
       private void getAllInvoices() {
           String url = "http://localhost:8080/api/invoices";
           ResponseEntity<Invoice[]> response = restTemplate.getForEntity(url,Invoice[].class);
@@ -1364,7 +1142,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
           logger.info("Status code value : {}", response.getStatusCodeValue());
           logger.info("Status code : {}",response.getStatusCode().name());
       }
-      
+
       private void updateInvoice() {
           String url = "http://localhost:8080/api/invoices/{id}";
           String body = "{\"name\":\"INV13\",\"amount\":888}";
@@ -1380,7 +1158,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
           logger.info("Status code : {}",response.getStatusCode().name());
           logger.info("Response Headers : {}", response.getHeaders());
       }
-      
+
       private void deleteInvoice() {
           String url = "http://localhost:8080/api/invoices/{id}";
       //  restTemplate.delete(url, 6);
@@ -1390,23 +1168,14 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
           logger.info("Status code : {}",response.getStatusCode().name());
           logger.info("Response Headers : {}", response.getHeaders());
       }
-      
+
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 # ResponseEntity를 Java Object로 변환하기
 
 ## getForEntity 메소드를 사용하여 Object 배열로 반환
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```java
 ResponseEntity<Invoice[]> response = restTemplate.getForEntity(url, Invoice[].class);
 
 Invoice[] invs = response.getBody();
@@ -1414,34 +1183,16 @@ List<Invoice> list = Arrays.asList(invs);
 System.out.println("Response Body : " +list);
 ```
 
-</div>
-
-</div>
-
 ## exchage() 메소드를 사용하여 Object 목록으로 반환
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```java
 ResponseEntity<List<Invoice>> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Invoice>>() {});
 
 List<Invoice> list = response.getBody();
 System.out.println("Response Body : " +list);
 ```
 
-</div>
-
-</div>
-
 ## exchage() 메소드를 사용하여 Object 배열로 반환
-
-<div class="code panel pdl" style="border-width: 1px;">
-
-<div class="codeContent panelContent pdl">
-
-``` syntaxhighlighter-pre
+```java
 ResponseEntity<Invoice[]> response = restTemplate.exchange(url, HttpMethod.GET, null, Invoice[].class);
 
 Invoice[] invs = response.getBody();
@@ -1449,28 +1200,4 @@ List<Invoice> list = Arrays.asList(invs);
 System.out.println("Response Body : " +list);
 ```
 
-</div>
-
-</div>
-
-- RestTemplate API 정보 <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.md" class="external-link" data-card-appearance="inline" rel="nofollow">https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.md</a>
-
-</div>
-
-</div>
-
-</div>
-
-<div id="footer" role="contentinfo">
-
-<div class="section footer-body">
-
-Document generated by Confluence on 4월 05, 2026 17:57
-
-
-
-</div>
-
-</div>
-
-</div>
+- RestTemplate API 정보 [https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.md](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/client/RestTemplate.md)Document generated by Confluence on 4월 05, 2026 17:57

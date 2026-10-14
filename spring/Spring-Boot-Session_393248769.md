@@ -1,31 +1,11 @@
-<div id="page">
-
-<div id="main" class="aui-page-panel">
-
-<div id="main-header">
-
-<div id="breadcrumb-section">
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Spring](Spring_120848385.md)
 4.  [Spring Boot](Spring-Boot_223477765.md)
 
-</div>
+# Programming : Spring Boot Session
 
-# <span id="title-text"> Programming : Spring Boot Session </span>
-
-</div>
-
-<div id="content" class="view">
-
-<div class="page-metadata">
-
-Created by <span class="author"> Dongwook Han</span> on 5월 01, 2023
-
-</div>
-
-<div id="main-content" class="wiki-content group">
+Created by Dongwook Han on 5월 01, 2023
 
 # Session 정의
 
@@ -81,19 +61,15 @@ Created by <span class="author"> Dongwook Han</span> on 5월 01, 2023
 
 - `이 튜토리얼에서는 JDBC 세션을 사용하여 Spring Boot 세션 관리를 사용하는 방법을 볼 것입니다.`
 
-<span class="confluence-embedded-file-wrapper image-center-wrapper"><img src="./media/attachments/393248769/393445381.png" class="confluence-embedded-image image-center" loading="lazy" data-image-src="attachments/393248769/393445381.png" data-height="161" data-width="424" data-unresolved-comment-count="0" data-linked-resource-id="393445381" data-linked-resource-version="1" data-linked-resource-type="attachment" data-linked-resource-default-alias="spring_session_01.png" data-base-url="https://never4got10.atlassian.net/wiki" data-linked-resource-content-type="image/png" data-linked-resource-container-id="393248769" data-linked-resource-container-version="1" data-media-id="efb19ab8-86ea-40aa-b99c-90f9295882db" data-media-type="file" /></span>
+![](attachments/393248769/393445381.png)
 
 ## Spring Session With Redis
 
 ### 예제
 
 - gradle 선언
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```css
+css
   dependencies {
       implementation 'org.springframework.boot:spring-boot-starter-data-redis'
       implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -101,40 +77,24 @@ Created by <span class="author"> Dongwook Han</span> on 5월 01, 2023
       implementation 'org.springframework.session:spring-session-data-redis'
       testImplementation 'org.springframework.boot:spring-boot-starter-test'
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - application.yml 정의
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```yaml
+yaml
   spring:
     session:
       store-type: redis
     redis:
       host: localhost
       port: 6379
-  ```
+```
 
-  </div>
-
-  </div>
-
-  - spring.session.store-type : redis 로 정의
+- spring.session.store-type : redis 로 정의
 
 - Controller
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @Controller
   public class SpringBootSessionController {
       @PostMapping("/addNote")
@@ -167,19 +127,11 @@ Created by <span class="author"> Dongwook Han</span> on 5월 01, 2023
           return "redirect:/home";
       }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - html
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```html
+html
   <!DOCTYPE html>
   <html>
   <head>
@@ -187,35 +139,29 @@ Created by <span class="author"> Dongwook Han</span> on 5월 01, 2023
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   </head>
   <body>
-      <div>
+
           <form th:action="@{/addNote}" method="post">
               <textarea name="note" cols="40" rows="2"></textarea>
-              <br><input type="submit" value="Add Note" />
+
+<input type="submit" value="Add Note" />
           </form>
-      </div>
-      <div>
+
+
           <form th:action="@{/invalidate/session}" method="post">
               <input type="submit" value="Destroy Session"  />
           </form>
-      </div>
-      <div>
+
+
           <h2>Notes</h2>
-          <ul th:each="note : ${notesSession} " >
-              <li th:text="${note}">note</li>
-          </ul>
-      </div>
+- note
 
   </body>
   </html>
-  ```
-
-  </div>
-
-  </div>
+```
 
 ### 테스트
 
-- <a href="http://localhost:8080/home" class="external-link" rel="nofollow">http://localhost:8080/home</a> 으로 접속
+- [http://localhost:8080/home](http://localhost:8080/home) 으로 접속
 
 - redis client 를 설치하여 테스트
 
@@ -228,20 +174,12 @@ Created by <span class="author"> Dongwook Han</span> on 5월 01, 2023
       - “monitor” 명령 실행하면 이후 발생하는 이벤트 모니터링 가능
 
       - 보기가 힘듬
-
-        <div class="code panel pdl" style="border-width: 1px;">
-
-        <div class="codeContent panelContent pdl">
-
-        ``` syntaxhighlighter-pre
+```java
+java
         1682918087.956221 [0 127.0.0.1:2454] "HMSET" "spring:session:sessions:c11e0b73-45b7-4338-afb2-6190772e8eb9" "lastAccessedTime" "\xac\xed\x00\x05sr\x00\x0ejava.lang.Long;\x8b\xe4\x90\xcc\x8f#\xdf\x02\x00\x01J\x00\x05valuexr\x00\x10java.lang.Number\x86\xac\x95\x1d\x0b\x94\xe0\x8b\x02\x00\x00xp\x00\x00\x01\x87\xd5\xbc\x1d\x10" "sessionAttr:NOTES_SESSION" "\xac\xed\x00\x05sr\x00\x13java.util.ArrayListx\x81\xd2\x1d\x99\xc7a\x9d\x03\x00\x01I\x00\x04sizexp\x00\x00\x00\x03w\x04\x00\x00\x00\x03t\x00\x05note1t\x00\x05note2t\x00\x05note3x"
-        ```
+```
 
-        </div>
-
-        </div>
-
-      - 기타 : redis 서버 메모리 설정 : “redis-server.exe -maxheap 1024M”
+- 기타 : redis 서버 메모리 설정 : “redis-server.exe -maxheap 1024M”
 
   3.  RDB Tool : GUI tool, 상용
 
@@ -250,12 +188,8 @@ Created by <span class="author"> Dongwook Han</span> on 5월 01, 2023
 ### 예제
 
 - gradle 선언
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```css
+css
   dependencies {
       implementation 'org.springframework.boot:spring-boot-starter-web'
   //    spring sesion 추가
@@ -266,19 +200,11 @@ Created by <span class="author"> Dongwook Han</span> on 5월 01, 2023
       runtimeOnly 'com.mysql:mysql-connector-j'
       testImplementation 'org.springframework.boot:spring-boot-starter-test'
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - application.yml 정의
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```yaml
+yaml
   spring:
     datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -294,13 +220,9 @@ Created by <span class="author"> Dongwook Han</span> on 5월 01, 2023
     h2:
       console:
         enabled: true
-  ```
+```
 
-  </div>
-
-  </div>
-
-  - spring.session.store-type : jdbc
+- spring.session.store-type : jdbc
 
   - spring.session.jdbc.initialize-shema
 
@@ -314,38 +236,7 @@ Created by <span class="author"> Dongwook Han</span> on 5월 01, 2023
 
 - `Hazelcast는 자주 사용되는 데이터에 대한 메모리 내 액세스를 통해 그리고 탄력적으로 확장 가능한 데이터 그리드를 통해 애플리케이션의 예측 가능한 중앙 확장을 제공합니다. 이러한 기술은 데이터베이스의 쿼리 부하를 줄이고 속도를 향상시킵니다.`
 
-</div>
-
-<div class="pageSection group">
-
-<div class="pageSectionHeader">
-
 ## Attachments:
 
-</div>
-
-<div class="greybox" align="left">
-
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [spring_session_01.png](attachments/393248769/393445381.png) (image/png)\
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div id="footer" role="contentinfo">
-
-<div class="section footer-body">
-
+![](./media/images/icons/bullet_blue.gif) [spring_session_01.png](attachments/393248769/393445381.png) (image/png)
 Document generated by Confluence on 4월 05, 2026 17:57
-
-
-
-</div>
-
-</div>
-
-</div>

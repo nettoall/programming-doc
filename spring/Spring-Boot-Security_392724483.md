@@ -1,37 +1,17 @@
-<div id="page">
-
-<div id="main" class="aui-page-panel">
-
-<div id="main-header">
-
-<div id="breadcrumb-section">
-
 1.  [Programming](README.md)
 2.  [Programming](Programming_98307.md)
 3.  [Spring](Spring_120848385.md)
 4.  [Spring Boot](Spring-Boot_223477765.md)
 
-</div>
+# Programming : Spring Boot Security
 
-# <span id="title-text"> Programming : Spring Boot Security </span>
+Created by Dongwook Han, last modified on 11월 24, 2023
 
-</div>
-
-<div id="content" class="view">
-
-<div class="page-metadata">
-
-Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24, 2023
-
-</div>
-
-<div id="main-content" class="wiki-content group">
-
-- <a href="https://www.techgeeknext.com/spring-boot-security/basic_authentication_web_security" class="external-link" rel="nofollow">https://www.techgeeknext.com/spring-boot-security/basic_authentication_web_security</a>
+- [https://www.techgeeknext.com/spring-boot-security/basic_authentication_web_security](https://www.techgeeknext.com/spring-boot-security/basic_authentication_web_security)
 
 # Spring Security Architecture
 
-<span class="confluence-embedded-file-wrapper image-center-wrapper confluence-embedded-manual-size"><span class="image placeholder confluence-embedded-image image-center" original-image-src="attachments/392724483/414220296.png?width=760" original-image-title="" width="760" loading="lazy" image-src="attachments/392724483/414220296.png" data-height="410" data-width="825" unresolved-comment-count="0" linked-resource-id="414220296" linked-resource-version="1" linked-resource-type="attachment" linked-resource-default-alias="security01.png" base-url="https://never4got10.atlassian.net/wiki" linked-resource-content-type="image/png" linked-resource-container-id="392724483" linked-resource-container-version="11" media-id="0ceda5b1-b850-40f7-bc65-d76359e76380" media-type="file"></span></span>
+![](attachments/392724483/414220296.png)
 
 - doFilter() : filter 들이 수행됨
 
@@ -63,25 +43,17 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
 
 - SecurityContextHolder가 설정되어 있으면 사용자가 인증 됐음으로 인식
 
-<span class="confluence-embedded-file-wrapper image-center-wrapper confluence-embedded-manual-size"><span class="image placeholder confluence-embedded-image image-center" original-image-src="attachments/392724483/414351372.png?width=602" original-image-title="" width="602" loading="lazy" image-src="attachments/392724483/414351372.png" data-height="342" data-width="602" unresolved-comment-count="0" linked-resource-id="414351372" linked-resource-version="1" linked-resource-type="attachment" linked-resource-default-alias="SecurityContextHolder.png" base-url="https://never4got10.atlassian.net/wiki" linked-resource-content-type="image/png" linked-resource-container-id="392724483" linked-resource-container-version="11" media-id="1a2de213-f374-4d53-8448-6ac7a8678868" media-type="file"></span></span>
+![](attachments/392724483/414351372.png)
 
 - 코드 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   SecurityContext context = SecurityContextHolder.createEmptyContext();
   Authentication authentication = new TestingAuthenticationToken("username","password", "ROLE_USER");
   context.setAuthentication(authentication);
 
   SecurityContextHolder.setContext(context);
-  ```
-
-  </div>
-
-  </div>
+```
 
 - Thread 경합을 피하려면 SecurityContextHolder.getContext().setAuthentication(authentication)을 사용하지 않는 것을 권장 =\> 새로운 SecurityContext을 생성하여 SecurityContextHolder.setContext() 에 설정
 
@@ -175,7 +147,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
 
   - 클라이언트가 리소스를 요청할 때 미리 ID/PW 같은 credential 전송시, credential을 요청하는 HTTP 응답 불필요
 
-  - 클라이언트가 접근 권한이 없는 리소스에 인증되지 않은 요청 보낼 시, 인증을 위해 **<u>AuthenticationEntryPoint가 클라이언트에 로그인 페이지나 WWW-Authenticate 헤더로 HTTP 응답 전송</u>**
+  - 클라이언트가 접근 권한이 없는 리소스에 인증되지 않은 요청 보낼 시, 인증을 위해 **AuthenticationEntryPoint가 클라이언트에 로그인 페이지나 WWW-Authenticate 헤더로 HTTP 응답 전송**
 
 ## AbstractAuthennticationProcessingFilter
 
@@ -191,17 +163,17 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
 
 - DelegatingFilterProxy : Servlet Container와 Spring ApplicationContext를 연결 - Servlet이 Spring Bean을 참조할 수 있게 해줌
 
-<span class="confluence-embedded-file-wrapper image-center-wrapper confluence-embedded-manual-size"><span class="image placeholder confluence-embedded-image image-center" original-image-src="attachments/392724483/414253060.png?width=760" original-image-title="" width="760" loading="lazy" image-src="attachments/392724483/414253060.png" data-height="410" data-width="919" unresolved-comment-count="0" linked-resource-id="414253060" linked-resource-version="2" linked-resource-type="attachment" linked-resource-default-alias="security02.png" base-url="https://never4got10.atlassian.net/wiki" linked-resource-content-type="image/png" linked-resource-container-id="392724483" linked-resource-container-version="11" media-id="71495f0b-6012-458c-ae5d-cbaf82ea8d07" media-type="file"></span></span>
+![](attachments/392724483/414253060.png)
 
 ## FilterChainProxy
 
 - Spring Security가 제공하는 특별한 Filter
 
-<span class="confluence-embedded-file-wrapper image-center-wrapper confluence-embedded-manual-size"><span class="image placeholder confluence-embedded-image image-center" original-image-src="attachments/392724483/414449667.png?width=760" original-image-title="" width="760" loading="lazy" image-src="attachments/392724483/414449667.png" data-height="410" data-width="829" unresolved-comment-count="0" linked-resource-id="414449667" linked-resource-version="2" linked-resource-type="attachment" linked-resource-default-alias="security03.png" base-url="https://never4got10.atlassian.net/wiki" linked-resource-content-type="image/png" linked-resource-container-id="392724483" linked-resource-container-version="11" media-id="fcb1dfcd-1ddf-40ad-8b75-7ca935103159" media-type="file"></span></span>
+![](attachments/392724483/414449667.png)
 
 ## SecurityFilterChain
 
-<span class="confluence-embedded-file-wrapper image-center-wrapper confluence-embedded-manual-size"><span class="image placeholder confluence-embedded-image image-center" original-image-src="attachments/392724483/414220303.png?width=760" original-image-title="" width="760" loading="lazy" image-src="attachments/392724483/414220303.png" data-height="410" data-width="904" unresolved-comment-count="0" linked-resource-id="414220303" linked-resource-version="2" linked-resource-type="attachment" linked-resource-default-alias="security04.png" base-url="https://never4got10.atlassian.net/wiki" linked-resource-content-type="image/png" linked-resource-container-id="392724483" linked-resource-container-version="11" media-id="30751030-ff1e-4b2c-91df-e4551ebf5b90" media-type="file"></span></span>
+![](attachments/392724483/414220303.png)
 
 # SecurityFilters
 
@@ -295,7 +267,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
 
   3.  AccessDeniedException 이었으면 접근 거부하고 AccessDeniedHandler 에서 처리
 
-<span class="confluence-embedded-file-wrapper image-center-wrapper confluence-embedded-manual-size"><span class="image placeholder confluence-embedded-image image-center" original-image-src="attachments/392724483/414253066.png?width=615" original-image-title="" width="615" loading="lazy" image-src="attachments/392724483/414253066.png" data-height="410" data-width="615" unresolved-comment-count="0" linked-resource-id="414253066" linked-resource-version="2" linked-resource-type="attachment" linked-resource-default-alias="security05.png" base-url="https://never4got10.atlassian.net/wiki" linked-resource-content-type="image/png" linked-resource-container-id="392724483" linked-resource-container-version="11" media-id="8c23d5c6-b031-4e09-b723-66d8babf8423" media-type="file"></span></span>
+![](attachments/392724483/414253066.png)
 
 # Spring Boot 버전별 Security Configuration
 
@@ -304,12 +276,8 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
 - 기존 WebSecurityConfigurerAdapter를 상속받아 configuration을 구현하는 방식에서 bean 선언 방식으로 변경
 
   - Spring boot 2.6 이전 코드
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+```java
+java
     @Configuration
     @EnableWebSecurity
     public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -328,19 +296,11 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
             .permitAll();
       }
     }
-    ```
+```
 
-    </div>
-
-    </div>
-
-  - 이후 코드
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+- 이후 코드
+```java
+java
     @Configuration
     @EnableWebSecurity
     public class WebSecurityConfig {
@@ -356,28 +316,20 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
                        .permitAll()
           )
           .logout((logout) -> logout.permitAll());
-          
+
           return http.build();
-                       
+
       }
     }
-    ```
-
-    </div>
-
-    </div>
+```
 
 - 주의 사항
 
   - WebSecurity와 HttpSecurity 설정할 때 주의해야 함
 
   - 예제
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+```java
+java
     @Override
     public void configure(WebSecurity web) throws Exception{
       web.ignoring()
@@ -391,11 +343,7 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
          .antMatchers("/resources/**").hasRole("ADM")
          .anyRequest().authenticated();
     }
-    ```
-
-    </div>
-
-    </div>
+```
 
 - Spring Security 설정을 할 때 다음 규정을 지켜야 함
 
@@ -416,30 +364,18 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
   - 기타 csrf, 강제 https 등 거의 모든 설정
 
   - 예제 (리소스 권한 설정)
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+```java
+java
     http.authorizeRequest()
          .antMatchers("/login/**", "/web-resources/**", "/actuator/**").permitAll()  // 설정한 리소스들의 접근을 인증절차 없이 허용
          .antMatchers("/admin/**").hasAnyRole("ADMIN")  // 인증 후 ADMIN 권한만 허용
          .antMatchers("/order/**").hasAnyRole("USER")
          .anyRequest().authenticated(); // 모든 리소스 의미. 앞에서 인증 설정한 것을 제외한 모든 리로스는 무조건 인증을 완료해야 접근 가능
-    ```
+```
 
-    </div>
-
-    </div>
-
-  - 에제 (로그인 처리)
-
-    <div class="code panel pdl" style="border-width: 1px;">
-
-    <div class="codeContent panelContent pdl">
-
-    ``` syntaxhighlighter-pre
+- 에제 (로그인 처리)
+```java
+java
     http.formLogin()  // 로그인 페이지와 기타 로그인 처리 및 성공/실패 처리를 하겠다는 선언
       .loginPage("/login-page")  // 디폴트 설정은 /login, spring이 제공하는 기본 페이지 호출됨
       .loginProcessingUrl("/login-process") //인증처리 URL 설정, 인증처리하는 필터 호출
@@ -447,15 +383,11 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
       .successHandler(new CustomAuthenticationSuccessHandler("/main"))  // 정상 인증 후 커스텀 핸들러
       .failureUrl("/login-fail")  // 실패시 이동 페이지
       .failureHandler(new CustomAuthenticationFailureHandler("/login-fail"))  // 실패시 커스텀 핸들러
-    ```
+```
 
-    </div>
+-
 
-    </div>
-
-  - 
-
-참고 자료 : <a href="https://reflectoring.io/spring-security" class="external-link" rel="nofollow">https://reflectoring.io/spring-security</a> 예제는 spring 2.6 이후 예제로 추정
+참고 자료 : [https://reflectoring.io/spring-security](https://reflectoring.io/spring-security) 예제는 spring 2.6 이후 예제로 추정
 
 # Spring Security Cusomizing
 
@@ -470,51 +402,27 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
 - Id/pw 인증하는 UsernamePasswordAuthenticationFilter 대신 별도의 인증 처리 필터 등록 예
 
 - 기존 필터 앞에 수행
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   http.addFilterBefore(new CustomAuthenticationProcessingFilter("/login-process"),
       UsernamePassword.AuthenticationFilter.class);
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 기존 필터 뒤에 수행
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   http.addFilterAfter(new CustomAuthenticationProcessingFilter("/login-process"),
       UsernamePassword.AuthenticationFilter.class);
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 지정된 필터의 순서에 커스텀 필터가 추가
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   http.addFilterAt(new CustomAuthenticationProcessingFilter("/login-process"),
       UsernamePassword.AuthenticationFilter.class);
-  ```
+```
 
-  </div>
-
-  </div>
-
-  - 대체가 되는 개념이 아닌 바로 앞에 추가되는 개념
+- 대체가 되는 개념이 아닌 바로 앞에 추가되는 개념
 
 - 필터를 대체하는 개념보다는 인증처리되면 뒤에 인증 로직을 수행하지 않고 통과하기 때문에 대체하는 것처럼 보임(지금 예제는 인증에 관하여 처리하므로, 다른 기능일 경우도 동일)
 
@@ -523,12 +431,8 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
 - 커스텀 필터에 인증 매니저 및 성공 실패 핸들러를 추가 및 설정할 수 있음
 
 - 코드 예제
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @Bean
   public CustomAuthenticatoinProcessingFilter customAuthenticationProcessingFilter() {
     CustomAuthenticationProcessingFilter filter = new CustomAuthenticatoinProcessingFilter("/login-process");
@@ -539,53 +443,37 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
 
   @Override
   public void configure(HttpSecurity http) throws Exception {
-    http.addFilterBefore(customAuthenticationProcessingFilter(), 
+    http.addFilterBefore(customAuthenticationProcessingFilter(),
          UsernamePasswordAuthenticationFilter.class);
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 커스텀 필터를 통한 인증 처리
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   public class CustomAuthenticationProcessingFilter extends AbstractAuthenticationProcessingFilter {
     public CustomAuthenticationnProcessingFilter(String defaultFilterProcessesUrl) {
       super(defaultFilterProcessesUrl);
     }
-    
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
       String username = request.getParameter("username");
       String password = request.getParameter("password");
-      
+
       return getAuthenticatoinManager()
           .authenticate(new UsernamePasswordAuthenticationToken(username, password));
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - CustomAuthenticationManager 생성
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   public class CustomAuthenticationManager implements AuthenticationManager {
     @Autowired
     private UserDetailsService userDetailsService;
-    
+
     /**
      * 사용자 인증 처리, 비번 일치, 존재하는 사용자 인지 등등 로직 처리
      */
@@ -597,68 +485,48 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
                , userDetails.getAuthorities());
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - UserDetails 구현
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   public class CustomUserDetilas implements UserDetails {
     private List<GrantedAuthority> authorities;
     private String password;
-    
+
     ...
     public CustomUserDetails(User user) {
       this.authorities = user.getAuthorities();
       this.password = user.getPassword();
       ...
     }
-    
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
       return authorities;
     }
-    
+
     @Override
     public String getPassword() {
       return password;
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - UserDetailsService 구현
-
-  <div class="code panel pdl" style="border-width: 1px;">
-
-  <div class="codeContent panelContent pdl">
-
-  ``` syntaxhighlighter-pre
+```java
+java
   @Service
   public class UserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
-    
+
     @Override
     public UserDetails loadUserByUsername(String userId) throws BrmsBadCredentialsException {
       return CustomUserDetails(userRepository.findByUserId(userId));
     }
   }
-  ```
-
-  </div>
-
-  </div>
+```
 
 - 인증성공/인증 실패 커스텀 핸들러
 
@@ -724,53 +592,22 @@ Created by <span class="author"> Dongwook Han</span>, last modified on 11월 24,
 
   - denyAll()
 
-</div>
-
-<div class="pageSection group">
-
-<div class="pageSectionHeader">
-
 ## Attachments:
 
-</div>
-
-<div class="greybox" align="left">
-
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [spring_security_architecture.png](attachments/392724483/394657793.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [spring_security_01.png](attachments/392724483/394788865.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [spring_security_02.png](attachments/392724483/394657799.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [spring_security_03.png](attachments/392724483/394723331.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [spring_security_04.png](attachments/392724483/394625032.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [image-20230512-050938.png](attachments/392724483/394952709.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [security02.png](attachments/392724483/414318597.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [security05.png](attachments/392724483/414187530.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [security01.png](attachments/392724483/414220296.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [security04.png](attachments/392724483/414220310.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [security03.png](attachments/392724483/414253072.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [security02.png](attachments/392724483/414253060.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [security03.png](attachments/392724483/414449667.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [security04.png](attachments/392724483/414220303.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [security05.png](attachments/392724483/414253066.png) (image/png)\
-<img src="./media/images/icons/bullet_blue.gif" width="8" height="8" /> [SecurityContextHolder.png](attachments/392724483/414351372.png) (image/png)\
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div id="footer" role="contentinfo">
-
-<div class="section footer-body">
-
+![](./media/images/icons/bullet_blue.gif) [spring_security_architecture.png](attachments/392724483/394657793.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [spring_security_01.png](attachments/392724483/394788865.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [spring_security_02.png](attachments/392724483/394657799.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [spring_security_03.png](attachments/392724483/394723331.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [spring_security_04.png](attachments/392724483/394625032.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [image-20230512-050938.png](attachments/392724483/394952709.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [security02.png](attachments/392724483/414318597.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [security05.png](attachments/392724483/414187530.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [security01.png](attachments/392724483/414220296.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [security04.png](attachments/392724483/414220310.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [security03.png](attachments/392724483/414253072.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [security02.png](attachments/392724483/414253060.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [security03.png](attachments/392724483/414449667.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [security04.png](attachments/392724483/414220303.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [security05.png](attachments/392724483/414253066.png) (image/png)
+![](./media/images/icons/bullet_blue.gif) [SecurityContextHolder.png](attachments/392724483/414351372.png) (image/png)
 Document generated by Confluence on 4월 05, 2026 17:57
-
-
-
-</div>
-
-</div>
-
-</div>
