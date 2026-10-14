@@ -3,7 +3,7 @@
 	- Basic
 	
 		- [String](./java/String_276234241.md)
-		-  [제어문](./java/366313473.md)
+		- [제어문](./java/366313473.md)
 		- [클래스객체](./java/class_20260701107.md)
 		- [Interface](./java/Interface_384237577.md)
 		- [중첩 클래스(Nested Class)](./java/384172057.md)
