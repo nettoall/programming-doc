@@ -4,47 +4,40 @@
 4.  [Java Basic](Java-Basic_399278081.md)
 5.  [Thread](Thread_40042767.md)
 
-# Programming : Thread Pool
+# Thread Pool
 
 Created by Dongwook Han, last modified on 6월 16, 2023
 
-# 스레드 풀(Thread Pool)
-
+## 스레드 풀(Thread Pool)
 - 병렬 작업 처리가 많아져서 스레드 개수가 증가되면 CPU busy, memory 사용량 증가 → 어플리케이션 성능 저하
-
 - 갑작스런 병렬 작업의 폭증으로 인한 **스레드의 폭증 방지** → 스레드풀 사용
-
 - Thread Pool 제공 interface 와 클래스 : ExecutorService, Executors
 
-## 스레드 풀 생성 및 종료
+### 스레드 풀 생성 및 종료
 
-### 스레드 풀 생성
-
+#### 스레드 풀 생성
 - ExecutorService 구현 객체는 Executors 클래스의 다음 두 가지 메소드 중 하나를 이용해서 생성
-
   - newCahcedThreadPool() : 초기 스레드, 코어 스레드 수 0, Integer.MAX_VALUE 만큼 스레드 생성(운영체제의 성능과 상황에 따라 결정)
 ```java
-java
+
     ExecutorService executorService = Executors.newCachedThreadPool();
 ```
 
 - newFixedThreadPool(int nThreads) : 초기 스레드 수 0, 코어 스레드 수 nThreads, 최대 스레드 수 nThreads
 ```java
-java
+
     ExecutorService executorService = Executors.newFixedThreadPool(
       Runtime.getRuntime().availableProcessors()  // cpu 코어의 수만큼 최대 스레드 수 사용
     );
 ```
 
 - ThreadPoolExecutor 객체 생성하여 스레드 풀 생성
-
   - 코어 스레드 개수, 최대 스레드 개수 지정 가능
-
   - newCachedThreadPool(), newFixedThreadPool() 도 내부적으로 ThreadPoolExecutor 사용하여 생성됨
 
   - 예제
 ```java
-java
+
     ExecutorService threadPool = new ThreadPoolExecutor(
       3, // 코어 스레드 개수
       100, // 최대 스레드 개수
@@ -54,40 +47,34 @@ java
       );
 ```
 
-### 스레드 풀 종료
-
+#### 스레드 풀 종료
 - 스레드 풀의 스레드는 기본적으로 데몬 스레드가 아니므로 main 스레드 종료 후에도 실행 상태로 남음
-
 - 스레드풀을 종료시켜 스레드들을 종료상태가 되도록 처리
-
 - ExecutorService 제공 종료 메소드
 
-|  |  |  |
-|----|----|----|
-| **리턴타입** | **메소드명** | **설명** |
-| void | shutdown() | 현재 처리중인 작업뿐만 아니라 작업 큐에 대기하고 있는 모든 작업을 처리한 뒤에 스레드풀 종료 |
-| List\<Runnable\> | shutdownNow() | 현재 작업 처리 중인 스레드를 interrupt 해서 작업 중지를 시도하고 스레드풀을 종료. 리턴 값은 작업 큐에 있는 미처리된 작업(Runnale) 의 목록 |
-| boolean | awaitTermination(long timeout, TimeUnit unit) | shutdown() 메소드 호출 이후, 모든 작업 처리를 timeout 시간 내에 완료하면 true 리턴, 완료하지 못하면 작업 처리 중인 스레드를 interrupt 하고 false 리턴 |
+| **리턴타입**         | **메소드명**                                      | **설명**                                                                                                   |
+| ---------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| void             | shutdown()                                    | 현재 처리중인 작업뿐만 아니라 작업 큐에 대기하고 있는 모든 작업을 처리한 뒤에 스레드풀 종료                                                     |
+| List\<Runnable\> | shutdownNow()                                 | 현재 작업 처리 중인 스레드를 interrupt 해서 작업 중지를 시도하고 스레드풀을 종료. 리턴 값은 작업 큐에 있는 미처리된 작업(Runnale) 의 목록                 |
+| boolean          | awaitTermination(long timeout, TimeUnit unit) | shutdown() 메소드 호출 이후, 모든 작업 처리를 timeout 시간 내에 완료하면 true 리턴, 완료하지 못하면 작업 처리 중인 스레드를 interrupt 하고 false 리턴 |
 
 - 예제
 ```java
-java
+
   executorService.shutdown();
 
   executorService.shutdownNow();
 ```
 
-## 작업 생성과 처리 요청
+### 작업 생성과 처리 요청
 
-### 작업 생성
-
+#### 작업 생성
 - 하나의 작업은 Runnable 또는 Callable 구현 클래스로 표현
-
 - 작업 처리 완료 후 리턴 값이 있느냐 없느냐의 차이 : Runnable, Callable
 
 - 코드 예제
 ```java
-java
+
   // Runnable  구현 클래스
   Runnable task = new Runnable(){
     @Override
@@ -106,25 +93,18 @@ java
   }
 ```
 
-### 작업 처리 요청
-
+#### 작업 처리 요청
 - ExecutorService 의 작업 큐에 Runnable 또는 Callable 객체 넣은 행위
-
   - void execute(Runnable command) : Runnable 을 작업 큐에 저장, 작업 처리 결과를 받지 못함
-
   - Future\<?\> submit(Runnable task) : Runnable 또는 Callable을 작업 큐에 저장, 리턴된 Future를 통해 작업 처리 결과를 얻을 수 있음
-
   - Future\<V\> submit(Runnable task, V result) : submit() 메소드와 동일
-
   - Future\<V\> submit(Callable\<V\> task) : submit() 메소드와 동일
-
   - execute() 작업 처리 도중 예외 발생시 스레드 종료 및 해당 스레드 스레드 풀에서 제거됨 -\> 스레드 풀에서 새로운 스레드 생성
-
   - submit() 작업처리 도중 예외 발생시 스레드 종료 되지 않고 다음 작업을 위해 재사용됨 → 스레드의 생성 오버헤드 줄이는 효과
 
 - execute() 코드 예제
 ```java
-java
+
   public class ExecuteExample {
     public static void main(String[] args) throws Exception {
       ExecutorService executorService = Executors.newFixedThreadPol(2); // 최대 스레드 2인 풀 생성
@@ -150,27 +130,20 @@ java
   }
 ```
 
-## 블로킹 방식의 작업 완료 통보
-
+### 블로킹 방식의 작업 완료 통보
 - ExecutorService.submit() 사용하여 Future 객체 리턴
-
 - Future 지연 완료 객체 : 작업이 완료 될 때까지 기다렸다가 최종 결과를 얻음
-
 - Future의 get() 메소드 호출시 스레드가 작업 완료될때까지 블로킹되었다가 처리 결과 리턴 : 블로킹을 이용한 작업 완료 통보 방식
-
   - V get() : 작업이 완료될 때까지 블로킹되었다가 처리 결과 V를 리턴
-
   - V get(long timeout, TimeUnit unit) : timeout 시간 전에 작업이 완료되면 결과 V를 리턴하지만, 작업이 완료되지 않으면 TimeoutException을 발생 시킴
-
 - 주의 사항 : get() 메소드를 호출하는 스레드는 새로운 스레드이거나 스레드 풀의 또 다른 스레드여야 함. 작업 결과를 가져올 때까지 블로킹 되므로
 
-### 리턴값이 없는 작업 완료 통보
-
+#### 리턴값이 없는 작업 완료 통보
 - 리턴값이 없는 작업일 경우 Runnable 객체로 생성하면 됨
 
 - 예제 코드
 ```java
-java
+
   public class NoResultExample {
     public static void main(String[] args){
       ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
@@ -199,15 +172,13 @@ java
   }
 ```
 
-### 리턴값이 있는 작업 완료 통보
-
+#### 리턴값이 있는 작업 완료 통보
 - 작업 객체를 Callable로 생성
-
 - Generic Type 파라미터 T는 call() 메소드가 리턴하는 타입이 되도록 주의
 
 - 코드 예제
 ```java
-java
+
   public class ResultByCallableExample {
     public static void main(String[] args){
       ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
@@ -237,19 +208,15 @@ java
   }
 ```
 
-### 작업 처리 결과를 외부 객체에 저장
-
+#### 작업 처리 결과를 외부 객체에 저장
 - 상황에 따라 스레드가 작업한 결과를 외부 객체에 저장
-
 - 각 스레드들의 작업 결과를 취합할 수도 있으므로 외부 객체는 공유 객체가 될 수 있음
-
 - ExecutorService.submit(Runnable task, v result) 사용 가능
-
 - 외부 Result 객체를 생성자를 통해 주입받아야 함.
 
 - 코드 예제
 ```java
-java
+
   public class ResultByRunnableExample {
     public static void main(String[] args){
       ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
@@ -298,17 +265,14 @@ java
   }
 ```
 
-### 작업 완료 순으로 통보
-
+#### 작업 완료 순으로 통보
 - 작업 처리가 완료된 것부터 결과를 얻어 이용
-
 - 스레드 풀에서 작업 처리가 완료된 것만 통보 받는 방법 : CompletionService 이용
-
 - poll(), task() 메소드 사용
 
 - 샘플 예제
 ```java
-java
+
   public class CompletionServiceExample extends Thread{
     public static void main(String[] args){
       ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
@@ -354,25 +318,20 @@ java
   }
 ```
 
-## 콜백 방식의 작업 완료 통보
-
+### 콜백 방식의 작업 완료 통보
 - 콜백 방식을 이용해서 작업 완료 통보를 받는 방법
-
 - 스레드가 작업을 완료하면 특정 메소드(콜백 메소드)를 자동 실행하는 기법
 
 ![](attachments/399147055/399179792.png)
 
 - 블로킹 방식 : 작업 처리를 요청한 후 작업이 완료될 때까지 블로킹 됨
-
 - 콜백 방식 : 작업 처리를 요청한 후 다른 작업 수행 가능, 결과는 콜백 메소드로 전달됨
-
 - ExecutorService 에는 콜백을 위한 별도의 기능 제공 안 함
-
 - Runnable 구현 클래스 작성할 때 콜백 기능 구현
 
 - 콜백 기능 구현 예제
 ```java
-java
+
   // CompletionHandler 를 사용하여 콜백 메소드 구현
   CompletionHandler<V, A> callback = new CompletionHandler<V, A> () {
     // 작업 정상 처리시 호출
@@ -401,7 +360,7 @@ java
 
 - 콜백 방식의 작업 완료 통보 받는 예제
 ```java
-java
+
   public class CallbackExample {
     private ExecutorService executorService;
 
@@ -455,19 +414,15 @@ java
   }
 ```
 
-### Executors
-
-#### 개요
-
+#### Executors
+##### 개요
 - Concurrency API가 소개하는 ExecutorService는 Thread를 직접 사용하는 것을 대체하는 개념으로 제공
-
 - Executors는 비동기 task를 실행하고 thread pool을 관리하므로 thread를 수동적으로 생성할 필요가 없음.
-
 - Executors의 내부 pool의 모든 Thread는 revenant 작업을 위해 내부에서 재사용되므로 하나의 executor Service에서 어플리케이션 수명주기동안 많은 동시 작업을 수행할 수 있음.
 
 - Executor 예제
 ```java
-java
+
   ExecutorService executor = Executors.newSingleThreadExecutor();
   executor.submit(() -> {
     String threadName = Thread.currentThread().getName();
@@ -477,10 +432,9 @@ java
 ```
 
 - 위의 Thread 예제와 달리 Executors는 명시적으로 종료정의를 해주지 않으면 새로운 Task를 대기하면서 기다린다.
-
 - ExecutorService를 종료하기 위해 shutdown() - task가 끝날때까지 기다림, shutdownNow() - 실행 중인 모든 task를 즉시 종료 , 두 메소드를 제공
 ```java
-java
+
   try{
     System.out.println("attempt to shutdown executor");
     executor.shutdown();
@@ -496,11 +450,10 @@ java
   }
 ```
 
-#### Callables and Futures
-
+##### Callables and Futures
 - executors는 Callable 이라는 task를 지원하는데 Runnable을 구현한 void task와 달리 결과값을 리턴한다.
 ```java
-java
+
   Callable<Integer> task = () -> {
     try{
       TimeUnit.SECONDS.sleep(1);
@@ -515,7 +468,7 @@ java
 
 - executor가 Future 유형의 결과를 리턴하는 대신 나중에 실제 결과값을 조회해 온다.
 ```java
-java
+
   ExecutorService executor = Executors.newFixedThreadPool(1);
   Future<Integer> future = executor.submit(task);
 
@@ -526,20 +479,15 @@ java
   System.out.println("future done? " + future.isDone());
   System.out.println("result : " + result);
 ```
-
 - callable task를 실행 한 후, future.isDone() 메소드로 실행이 끝났는지 확인
-
 - future.get() 메소드는 현재 스레드를 블록하고 결과를 받기 전까지 callable task가 완료되기까지 기다린다.
-
 - future.get() 하기 전에 executorService 를 shutdownNow() 하면 오류가 발생
 
-#### Timeouts
-
+##### Timeouts
 - future.get() 호출을 하게 되면 블럭킹하고 대기하게 되는데 안 좋을 경우, 영원히 대기할 수 있음
-
 - 이런 것을 방지하고자 timeout 시간을 설정
 ```java
-java
+
   ExecutorService executor = Executors.newFixedThreadPool(1);
 
   Future<Integer> future = executor.submit(() -> {
@@ -553,13 +501,11 @@ java
   future.get(1, TimeUnit.SECONDES); // timeout 1초 설정하여 TimeoutException 발생시킴
 ```
 
-#### InvokeAll
-
+##### InvokeAll
 - 여러개의 callable에 대한 일괄 처리를 Executor가 지원
-
 - invokeAll() 메소드는 callable의 collection 을 받아 들이고 결과로 future list 반환함
 ```java
-java
+
   ExecutorService executor = Executors.newWorkStealingPool();
 
   List<Callable<String>> callables = Arrays.asList(
@@ -579,15 +525,13 @@ java
   )
 ```
 
-#### InvokeAny
-
+##### InvokeAny
 - Callable을 일괄 제출(처리)하는 다른 방법은 invokeAny() 메소드 사용
-
 - invokeAll() 와 약간 다름. Future 객체들을 반환하는 대신 invokeAny()는 첫번째 호출 가능 항목이 종료되고 해당 호출의 결과가 리턴될 때까지 블럭킹됨(최초 하나가 리턴 될 때까지 블럭킹)
 
 - 테스트 예제
 ```java
-java
+
   // 결과를 리턴하기 전에 일정 시간동안 sleep 하는 Callable 객체 정의
   Callable<String> callable(String result, long sleepSeconds) {
     return () -> {
@@ -612,18 +556,15 @@ java
 ```
 
 - **newWorkStealingPool()** 이라는 다른 타입의 executor 생성.
-
   - **ForkJoinPool** 을 만드는데 기존 스레드풀과는 약간 다름
 
-### Scheduled Executors
-
+#### Scheduled Executors
 - 주기적으로 수행하기 위해 스케줄 스레드 풀을 사용
-
 - ScheduledExecutorService 는 주기적으로 작업을 스케줄링하거나 어느 정도 시간이 지난 후 수행하고도 함
 
 - 샘플 예제
 ```java
-java
+
   ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
   Runnable task = () -> System.out.println("Scheduling: " + System.nanoTime());
@@ -637,16 +578,13 @@ java
 ```
 
 - 작업을 스케쥴링할 때 그 결과로 SheduledFuture 를 다룬다.
-
   - getDelay() 메소드는 남아 있는 시간을 측정?
 
 - 주기적으로 작업을 수행하기 위해서 excutor는 scheduleAtFixedRate() 와 scheduleWithFixedDealy() 메소드 제공
-
 - scheduleAtFixedRate() : 고정된 시간 비율로 작업 수행
-
 - 매 초마다 주기적으로 console에 출력하는 수행하는 예제
 ```java
-java
+
   ScheduledExecutorService executor = Executors.newScheduledThreadPool();
 
   Runnable task = () -> System.out.println("Scheduling: " + System.nanotime());
@@ -657,12 +595,11 @@ java
 ```
 
 - 이 작업은 처음 시작하기 전까지의 지연시간은 허용함
-
 - scheduleAtFixedRate() 은 작업의 수행 시간을 고려하지 않기 때문에, 만약 수행이 2초가 걸리는 작업을 1초마다 수행하도록 하면 스레드풀은 최대 용량으로 작동함 =\> 이 경우는 scheduleWithFixedDealy() 사용을 고려
 
 - scheduleWithFixedDelay() 작업 종료와 다음 작업 시작 사이에 대기 시간이 적용됨
 ```java
-java
+
   ScheduledExecutorService executor = Executors.newScheduledThreadPool();
 
   Runnable task = () -> {
@@ -677,13 +614,11 @@ java
   executor.schedulWithFixedDelay(task, 0, 1, TieUnit.SECONDS);  // 스레드가 종료되고 다시 시작하기 까지 1초의 시간 설정
 ```
 
-### Synchronized
-
+#### Synchronized
 - 여러 스레드에서 동시에 공유 가변 변수에 엑세스 할 때
-
 - 다음 예제의 increment() 메소드를 여러 스레드가 같이 사용할 때 문제가 발생됨
 ```java
-java
+
   int count = 0;
 
    void increment() {
@@ -693,7 +628,7 @@ java
 
 - 다음과 같이 thread pool 에서 사용시 실제 결과를 10000이 아닌 실행할 때마다 다른 결과를 보게 된다.
 ```java
-java
+
   ExecutorService executor = Executors.newFixedThreadPool(2);
 
   IntStream.range(0, 10000)
@@ -704,10 +639,9 @@ java
 ```
 
 - 경합 상태를 초래하는 이 변수에 대한 엑세스를 동기화 하지 않고 서로 다른 스레드에서 공유하기 때문에 값이 그때 그때 달라짐
-
 - 다음과 같이 공유 객체에 동기화를 적용하여 스레드 동기화를 지원
 ```java
-java
+
   synchronized void incrementSync() {
     count = count + 1;
   }
@@ -715,7 +649,7 @@ java
 
 - incrementSync()를 실행할 때마다 원하는 결과 10000을 얻게 됨. 더 이상 경합 상태가 아님
 ```java
-java
+
   ExecutorService executor = Executors.newFixedThreadPool(2);
 
   IntStream.range(0, 10000)
@@ -727,7 +661,7 @@ java
 
 - synchronized 키워드를 메소드가 아닌 블럭에도 사용 가능하다.
 ```java
-java
+
   void incrementSync() {
     synchronized(this) {
       count = count + 1;
@@ -736,32 +670,23 @@ java
 ```
 
 - 내부적으로 java는 동기화를 관리하기 위해 monitor lock 도는 intrinsic lock 이라는 모니터를 사용
-
 - 이 monitor는 개체에 바인딩 됨
-
 - 동기화된 메서드를 사용할 때 각 메서드는 해당 개체의 동일한 모니터를 공유한다.
-
 - 모든 암시적인 모니터를 공유 객체에 재진입(접근) 할 수 있는 특성을 가진다?
-
 - 재진입은 현재 스레드에 대해 공유 객체가 잠긴다는 의미 → 다른 스레드는 접근을 못한다
-
 - 따라서 스레드는 공유 객체에 대해 자신만이 접근할 수 있으므로 교착상태에 빠지지 않고 여러번 접근 가능
 
-### Locks
-
-- sychronizzed 키워드를 사용해서 공유 객체에 접근하는 것을 암시적 잠금을 사용한다고 표현함
-
+#### Locks
+- sychronized 키워드를 사용해서 공유 객체에 접근하는 것을 암시적 잠금을 사용한다고 표현함
 - Concurrency API 는 Lock interface를 제공하여 명시적으로 잠금을 지원
-
 - 암시적 잠금보다 낫다고 함.
 
-#### ReentrantLock
-
+##### ReentrantLock
 - ReentrantLock 클래스는 synchronized 키워드를 통해 엑세스되는 암시적 모니터와 기본 동작이 동일
 
 - 암시적 모니터보다 기능이 확장된 상호 배제 잠금
 ```java
-java
+
   ReentrantLock lock = new ReentrantLock();
   int count = 0;
 
@@ -776,12 +701,10 @@ java
 ```
 
 - 명시적으로 잠금 선언과 잠금 해제를 구현하며 예외 발생시를 고려하여 finally 에 잠금 해제를 구현
-
 - 이미 잠금 선언이 되어 있을 경우에 다른 스레드가 잠금 선언을 하더라도 대기하고 현재 잠금 상태가 해제 될때까지 중지함.
-
 - 세밀한 제어를 위한 Locks 이 지원하는 여러 메소드 예제
 ```java
-java
+
   ExecutorService executor = Executors.newFixedThreadPool(2);
   ReentrantLock lock = new ReentrantLock();
 
@@ -805,20 +728,15 @@ java
 ```
 
 - 첫번째 스레드가 1초 동안 잠금처리할 동안 두번째 스레드가 잠금의 현재 상태에 대한 정보를 얻어서 출력하는 예제
-
   - tryLock() 메서드는 현재 스레드를 일시 중지하지 않고 잠금을 획득하려고 시도
-
   - locked 결과는 공유 객체를 엑세스하기 전에 잠금을 실제 획득되었는지 확인할 때 사용됨
 
-#### ReadWriteLock
-
+##### ReadWriteLock
 - ReadWriteLock interface 는 읽기 및 쓰기 엑세스를 위한 잠금을 정의
-
 - 쓰기 잠금을 하는 스레드가 없는 한 여러 스레드가 읽기 잠금을 동시에 유지
-
 - 읽기가 더 자주 발생하는 경우 성능과 처리량이 향상
 ```java
-java
+
   ExecutorService executor = Executors.newFixedThreadPool(2);
   Map<String, String> map = new HashMap<>();
   ReadWriteLock lock = new ReentrantReadWriteLock();  // 읽기쓰기 lock 선언
@@ -835,10 +753,9 @@ java
 ```
 
 - 쓰기 lock 을 갖는 예제
-
 - 다음 읽기 lock을 갖는 스레드는 쓰기 lock 이 끝날 때까지 대기한 후, 동시에 읽는다.
 ```java
-java
+
   Runnable readTask = () -> {
     lock.readLock().lock();
     try{
@@ -854,22 +771,16 @@ java
 
   stop(executor);
 ```
-
 - 읽기 쓰레드는 동시에 안전하게 읽기 잠금을 획득하여 처리
 
-#### StampedLock
-
+##### StampedLock
 - java 8 에서는 읽기와 쓰기 잠금도 지원하는 새로운 종류의 잠금인 StampedLock 제공
-
 - StampedLock의 잠금 메서드는 긴 값으로 표시되는 stemp를 반환함
-
 - 이 stamp 를 사용하여 잠금을 해제하거나 유효한지 확인
-
 - 또한 Stamped locks 는 낙관적 잠금이라는 다른 잠금 모드를 지원
-
 - 읽기쓰기 잠금 예제를 StampedLock 으로 변경한 예제
 ```java
-java
+
   ExecutorService executor = Executors.newFixedThreadPool(2);
   Map<String, String> map = new HashMap<>();
   StampedLock lock = new StampedLock();
@@ -899,12 +810,11 @@ java
 
   stop(executor);
 ```
-
 - readLock(), writeLock() 을 통해 나중에 잠금 해제에 사용되는 stamp을 얻음
 
 - 낙관적 잠금 예제
 ```java
-java
+
   ExecutorService executor = Executors.newFixedThreadPool(2);
   StampedLock lock = new StampedLock();
 
@@ -934,30 +844,25 @@ java
 
   stop(executor);
 ```
-
 - 낙관적 읽기 잠금은 잠금이 실제로 사용 가능한지 여부에 관계 없이 항상 현재 스레드를 차단하지 않고 stamp를 반환하는 tryOptimisticRead() 를 호출
-
 - 이미 쓰기 잠금이 활성화된 경우 stamp 의 값은 0
-
 - lock.validate(stamp) 를 호출하여 stamp가 유효한지 항상 확인
 
 - 앞의 예제의 결과 값은 다음과 같음
 ```text
-text
+
   Optimistic Lock Valid : true
   Write Lock acquired
   Optimistic Lock Valid : false
   Write done
   Optimistic Lock Valid : false
 ```
-
 - 낙관적 잠금은 잠금을 획득한 직후에 유효
-
 - 가끔은 잠금을 해제했다가 잠그지 않고 읽기 잠금을 쓰기 잠금으로 변환하는 것이 유용
 
 - 예제코드
 ```java
-java
+
   ExecutorService executor = Executors.newFixedThreadPool(2);
   StampedLock lock = new StampedLock();
 
@@ -984,17 +889,14 @@ java
 
 StampedLock 보충 필요
 
-### Semaphores
-
+#### Semaphores
 - Concurrency API 는 세마포도 지원
-
 - lock 은 변수 또는 리소스에 대한 배타적 엑세스 권한을 부여
-
 - 세모포어는 모든 허가 집합을 유지 → 어플리케이션의 특정 부분을 동시에 허가하는 양을 제한하고자 할 때 유용함
 
 - 장기 실행 작업에 대한 엑세스를 제한하는 예제
 ```java
-java
+
   ExecutorService executor = Executors.newFixedThreadPool(10);
 
   Semaphore semaphore = new Semaphore(5);
@@ -1023,36 +925,25 @@ java
 
   stop(executor);
 ```
-
 - 스레드 풀은 동시에 10개의 작업을 실행할 수 있지만 크기 5인 세마포어를 사용하므로 동시 엑세스를 5로 제한
-
 - finally 에 세마포어를 적절하게 해제하도록 정의
 
 [https://winterbe.com/posts/2015/05/22/java8-concurrency-tutorial-atomic-concurrent-map-examples/](https://winterbe.com/posts/2015/05/22/java8-concurrency-tutorial-atomic-concurrent-map-examples/)
 
-## CompletableFuture
-
+### CompletableFuture
 - Java5에서 Future 추가됨 → 비동기 작업에 대한 결과값을 리턴 받을 수 있음
-
 - 그러나 다음과 같은 한계점 존재
-
   - 외부에서 완료시킬 수 없음, get 메소드의 타임아웃 설정으로만 완료 가능
-
   - blocking code(get)을 통해서만 이후의 결과 처리 가능
-
   - 여러 Future를 조합할 수 없음 ex) 회원 정보를 가조여고 나서 알림을 발송하는 등
-
   - 여러 작업을 조합하거나 예외 처리할 수 없음
 
 - 위와 같은 한계를 해결한 CompletableFuture 등장
-
 - 비동기 작업 실행, 작업 콜백, 작업 조합, 예외처리 등 가능
-
 - 작업 유형
-
   - runAsync() : 반환값이 없는 경우, 비동기로 작업 실행
 ```java
-java
+
     @Test
     void runAsync() throws ExecutionException, InterruptedException {
       CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
@@ -1065,7 +956,7 @@ java
 
 - supplyAsync() : 반환값이 있는 경우, 비동기로 작업 실행
 ```java
-java
+
     @Test
     void supplyAsync() throws ExecutionException, InterruptedException {
       CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
@@ -1075,16 +966,13 @@ java
       System.out.println("Thread: " + Thread.currentThread().getName());
     }
 ```
-
 - runAsync와 supplyAsync는 자바7에 추가된 ForkJoinPool의 commonPool을 사용해 작업을 실행할 스레드를 얻어 사용. 필요한 경우 ExecutorService를 파라미터로 넘겨주어서 사용
 
   - 작업 콜백
-
     - thenApply : 반환값을 받아 다른 값을 반환
-
     - 함수형 인터페이스 Fuction을 파라미터로 받음
 ```java
-java
+
       @Test
       void thenApply() throws ExecutionException, InterruptedException {
         CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
@@ -1097,10 +985,9 @@ java
 ```
 
 - thenAccept : 반환 값을 받아 처리하고 값을 반환하지 않음
-
     - 함수형 인터페이스 Consumer를 파라미터로 받음
 ```java
-java
+
       @Test
       void thenAccept() throws ExecutionException, InterruptedException {
         CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
@@ -1113,10 +1000,9 @@ java
 ```
 
 - thenRun : 반환 값을 받지 않고 다른 작업 실행
-
     - 함수형 인터페이스 Runnable을 파라미터로 받음
 ```java
-java
+
       @Test
       void thenRun() throws ExecutionException, InterruptedException {
         CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
@@ -1129,14 +1015,11 @@ java
 ```
 
 - 작업 조합
-
     - thenCompose
-
       - 두 작업이 이어서 실행하도록 조합하여 앞선 작업의 결과를 받아 사용
-
       - 함수형 인터페이스 Function 파라미터 인자
 ```java
-java
+
         @Test
         void thenCompose() throws ExecutionException, InterruptedException {
           CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
@@ -1156,12 +1039,10 @@ java
 ```
 
 - thenCombine
-
       - 두 작업을 독립적으로 실행하고, 둘 다 완료되었을 때 콜백 실행
-
       - 함수형 인터페이스 Function 파라미터 인자
 ```java
-java
+
         @Test
         void thenCombine() throws ExecutionException, InterruptedException {
           CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
@@ -1179,7 +1060,7 @@ java
 
 - allOf : 여러 작업들을 동시에 실행하고 모든 작업 결과에 콜백 실행
 ```java
-java
+
       @Test
       void allOf() throws ExecutionException, InterruptedException {
         CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
@@ -1202,7 +1083,7 @@ java
 
 - anyOf : 여러 작업들 중에서 가장 빨리 끝난 하나의 결과에 콜백을 실행
 ```java
-java
+
       @Test
       void anyOf() throws ExecutionException, InterruptedException {
         CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
@@ -1224,10 +1105,9 @@ java
 ```
 
 - 예외처리
-
     - exceptionally : 발생한 에러를 받아서 처리
 ```java
-java
+
       @ParameterizedTest // 동일한 테스트를 다른 파라미터로 여러 번 실행할 수 있도록 처리
       @jValueSource(booleans = {true, false})
       void exceptionally(boolean doThrow) throws ExecutionException, InterruptedException {
@@ -1245,7 +1125,7 @@ java
 
 - handler, handleAsync : (결과값, 에러) 를 반환받아 둘 다 처리
 ```java
-java
+
       @ParameterizedTest // 동일한 테스트를 다른 파라미터로 여러 번 실행할 수 있도록 처리
       @jValueSource(booleans = {true, false})
       void handle(boolean doThrow) throws ExecutionException, InterruptedException {
@@ -1261,7 +1141,5 @@ java
       }
 ```
 
-## Attachments:
 
-![](./media/images/icons/bullet_blue.gif) [blocking_callback.png](attachments/399147055/399179792.png) (image/png)
 Document generated by Confluence on 4월 05, 2026 17:57
