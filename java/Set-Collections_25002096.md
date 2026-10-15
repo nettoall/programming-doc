@@ -4,22 +4,16 @@
 4.  [Java Basic](Java-Basic_399278081.md)
 5.  [Collections](Collections_25002006.md)
 
-# Programming : Set Collections
+# Set Collections
 
 Created by Dongwook Han on 8월 23, 2020
 
-# 개념
-
+## 개념
 - 저장 순서가 유지 안됨
-
 - 객체 중복 저장 안 됨
-
 - 종류 : HashSet, LinkedHashSet, TreeSet
 
-<!-- -->
-
 - 공통 메소드
-
 
 | 기능 | 메소드 | 설명 |
 | --- | --- | --- |
@@ -39,9 +33,8 @@ Set\<String\> set = …;
 Iterator\<String\> iterator = set.iterator();
 
 - 메소드
-|          |            |                               |
+|   **반환**       | **메소드**            | **설명**                               |
 |----------|------------|-------------------------------|
-| **반환** | **메소드** | **설명**                      |
 | booelan  | hashNext() | 가져올 객체 여부              |
 | E        | next()     | 컬렉션에서 하나의 객체 가져온 |
 | void     | remove()   | Set컬렉션에서 객체 제거       |
@@ -64,7 +57,7 @@ Set<String> set = ...;
   }
 ```
 
-# HashSet
+## HashSet
 
 - 생성
 ```java
